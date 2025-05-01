@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'Pacifico';
+    src: url('/fonts/Pacifico-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/fonts/Montserrat-VariableFont.ttf');
+}
+
+.titleText {
+    font-family: 'Pacifico';
+    font-size: 60px;
+}
+
+Input {
+    font-family: 'Montserrat';
+}
