@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
-import { Box, Container, Flex, Image, VStack } from '@chakra-ui/react';
-import AuthForm from '../../components/AuthForm/AuthForm';
+import { Box, Container, Flex, Image, VStack } from "@chakra-ui/react";
+import AuthForm from "../../components/AuthForm/AuthForm";
 
 const AuthPage = () => {
   return (
@@ -15,14 +15,14 @@ const AuthPage = () => {
         backgroundSize={"50vh"}
       >
         <Container
-          maxW={'max-content'}
+          maxW={"max-content"}
           p={"1rem"}
           borderRadius={"0.5rem"}
           color={"#FFF7EF"}
           backgroundColor={"#3C3835"}
         >
           <Flex
-            direction={{base: "column", md: "row"}}
+            direction={{ base: "column", md: "row" }}
             justify={"center"}
             align={"center"}
             gap={3}
@@ -41,6 +41,6 @@ const AuthPage = () => {
       </Flex>
     </>
   );
-}
+};
 
-export default AuthPage
+export default AuthPage;
