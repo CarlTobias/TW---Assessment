@@ -10,7 +10,7 @@ const AuthPage = () => {
         minH={"100vh"}
         justify={"center"}
         align={"center"}
-        backgroundImage={"url('/images/Background.png')"}
+        backgroundImage={"url('/images/background.png')"}
         backgroundRepeat={"repeat"}
         backgroundSize={"50vh"}
       >
@@ -29,7 +29,7 @@ const AuthPage = () => {
           >
             {/* Left Side */}
             <Box display={{ base: "none", md: "block" }}>
-              <Image src="/images/doghouse.png" alt="doghouse.png" />
+              <Image src="/images/dogHouse.png" alt="doghouse.png" />
             </Box>
 
             {/* Right Side */}

@@ -1,7 +1,8 @@
 import React from "react";
 
-import { Box, Flex } from "@chakra-ui/react";
 import TopBar from "../../components/TopBar/TopBar";
+
+import { Box, Flex } from "@chakra-ui/react";
 import { Outlet, useLocation } from "react-router-dom";
 
 const PageLayout = () => {
