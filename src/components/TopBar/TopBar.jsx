@@ -22,7 +22,7 @@ const TopBar = () => {
               as={RouterLink}
               display={{ base: "none", md: "block" }}
             >
-              <Image src="../../../public/images/wooflesLogo.png" />
+              <Image src="/images/wooflesLogo.png" />
             </Link>
           </Box>
         </Tooltip>

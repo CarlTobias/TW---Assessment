@@ -1,28 +1,28 @@
-import React, { useState } from 'react'
-import './AuthForm.css'
+import React, { useState } from "react";
+import "./AuthForm.css";
 
 import { Box, Button, Flex, Input, Text, VStack } from "@chakra-ui/react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const AuthForm = () => {
-    const [isLogin, setIsLogin] = useState(true)
+  const [isLogin, setIsLogin] = useState(true);
 
-    const navigate = useNavigate()
+  const navigate = useNavigate();
 
-    const [inputs, setInputs] = useState({
-        email: '', 
-        password: '', 
-        confirmPassword: ''
-    })
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-    const handleAuth = () => {
-        if(!inputs.email || !inputs.password) {
-            alert("Please fill out all the fields")
-            return
-        }
-
-        navigate("/wooflesHome")
+  const handleAuth = () => {
+    if (!inputs.email || !inputs.password) {
+      alert("Please fill out all the fields");
+      return;
     }
+
+    navigate("/wooflesHome");
+  };
 
   return (
     <>
@@ -66,7 +66,9 @@ const AuthForm = () => {
               fontSize={14}
               type="password"
               value={inputs.confirmPassword}
-              onChange={(e) => setInputs({ ...inputs, confirmPassword: e.target.value })}
+              onChange={(e) =>
+                setInputs({ ...inputs, confirmPassword: e.target.value })
+              }
             />
           ) : null}
 
@@ -102,6 +104,6 @@ const AuthForm = () => {
       </Box>
     </>
   );
-}
+};
 
-export default AuthForm
+export default AuthForm;
