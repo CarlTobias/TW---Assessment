@@ -28,7 +28,7 @@ const AuthForm = () => {
     <>
       <Box padding={3} w={{ base: "max-content", md: "25vw" }}>
         <VStack spacing={4}>
-          <Text className="titleText" mb={0}>
+          <Text className="titleText" mb={0} fontSize={"60px"}>
             Woofles
           </Text>
 
@@ -77,7 +77,7 @@ const AuthForm = () => {
             mt={4}
             bg={"#897666"}
             color={"#FFFFFF"}
-            _hover={{ bg: "#E49F43" }}
+            _hover={{ bg: "#E6883E" }}
             onClick={handleAuth}
           >
             {isLogin ? "Log In" : "Create Account"}
@@ -93,7 +93,7 @@ const AuthForm = () => {
 
               <Box
                 onClick={() => setIsLogin(!isLogin)}
-                color={"#E49F43"}
+                color={"#E6883E"}
                 cursor={"pointer"}
               >
                 {isLogin ? "Sign Up" : "Log In"}

@@ -1,26 +1,30 @@
 import React from "react";
+import "./HomePage.css";
 
 import { Box, Container, Flex } from "@chakra-ui/react";
+import HomeFeed from "../../components/HomeFeed/HomeFeed";
+import SuggestedUsers from "../../components/SuggestedUsers/SuggestedUsers"
 
 const HomePage = () => {
   return (
     <>
-      <Container maxW={"100vw"} position={"relative"}>
-        <Flex justify={"center"}>
-          <Box py={10} mr={6} border={"1px solid black"}>
-            User Feed FYP
+      <Container maxW={"100vw"}>
+        <Flex justify={"center"} gap={20}>
+          <Box flex={1} display={{ base: "none", lg: "block" }} />
+
+          <Box className={"homeFeedHeader"} flex={3} py={10}>
+            <HomeFeed />
           </Box>
 
           <Box
-            position={"absolute"}
-            top={"0"}
-            right={"10"}
-            mr={20}
+            className={"homeFeedHeader"}
+            flex={1}
+            mr={10}
             display={{ base: "none", lg: "block" }}
             maxW={"300px"}
-            border={"1px solid red"}
+            py={5}
           >
-            Suggested Users
+            <SuggestedUsers />
           </Box>
         </Flex>
       </Container>

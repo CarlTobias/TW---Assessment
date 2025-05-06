@@ -20,7 +20,6 @@ const TopBar = () => {
             <Link
               to={"/wooflesHome"}
               as={RouterLink}
-              display={{ base: "none", md: "block" }}
             >
               <Image src="/images/wooflesLogo.png" />
             </Link>
