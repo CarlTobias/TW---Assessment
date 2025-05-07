@@ -10,10 +10,10 @@ const PostHeader = ({ avatar, username }) => {
           <Avatar src={avatar} alt={"profpic"} size={"sm"} />
           <VStack fontSize={12}>
             <Flex flexDirection={"column"} justify={"left"}>
-              <Text className={"username"} fontSize={12}>
+              <Text fontSize={12} fontWeight={700} color={"#FFF"}>
                 {username}
               </Text>
-              <Flex className={"locationTimePosted"} gap={2} fontSize={10}>
+              <Flex gap={2} fontSize={10} fontWeight={400} color={"#FFF"}>
                 <Text>Just Now</Text>
                 <Text>|</Text>
                 <Text>Location</Text>
@@ -23,8 +23,9 @@ const PostHeader = ({ avatar, username }) => {
         </Flex>
         <Box cursor={"pointer"}>
           <Text
-            className={"unFollow"}
             fontSize={12}
+            fontWeight={700}
+            color={"#FFF"}
             _hover={{ color: "#E6883E" }}
           >
             Unfollow

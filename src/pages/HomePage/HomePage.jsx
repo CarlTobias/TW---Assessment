@@ -1,5 +1,4 @@
 import React from "react";
-import "./HomePage.css";
 
 import { Box, Container, Flex } from "@chakra-ui/react";
 import HomeFeed from "../../components/HomeFeed/HomeFeed";
@@ -12,12 +11,11 @@ const HomePage = () => {
         <Flex justify={"center"} gap={20}>
           <Box flex={1} display={{ base: "none", lg: "block" }} />
 
-          <Box className={"homeFeedHeader"} flex={3} py={10}>
+          <Box flex={3} py={10}>
             <HomeFeed />
           </Box>
 
           <Box
-            className={"homeFeedHeader"}
             flex={1}
             mr={10}
             display={{ base: "none", lg: "block" }}

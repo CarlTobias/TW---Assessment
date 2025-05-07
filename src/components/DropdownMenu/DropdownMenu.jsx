@@ -1,5 +1,4 @@
 import React from "react";
-import './DropdownMenu.css'
 
 import {
   IconButton,
@@ -29,10 +28,10 @@ const DropdownMenu = () => {
 
         <MenuList bg="#3C3835" color="#FFF7EF" mr={"3px"}>
           <MenuItem
-            className={"menuText"}
             bg={"none"}
             gap={4}
             variant="ghost"
+            fontWeight={500}
             color="#FFF7EF"
             _hover={{ color: "#F2D47E", bg: "transparent" }}
             _active={{ color: "#F2D47E", bg: "transparent" }}

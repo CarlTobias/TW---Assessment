@@ -9,7 +9,7 @@ const SuggestedHeader = () => {
       <Flex justify={"space-between"} align={"center"} w={"100%"}>
         <Flex align={"center"} gap={2}>
           <Avatar name="LeiBaley" size={"sm"} src="/images/dogimg3.jpeg" />
-          <Text className={"usernameSuggestedHeader"} fontSize={14}>
+          <Text fontSize={14} fontWeight={600} color={"#000"}>
             LeiBaley
           </Text>
         </Flex>

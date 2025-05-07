@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./AuthForm.css";
 
 import { Box, Button, Flex, Input, Text, VStack } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";

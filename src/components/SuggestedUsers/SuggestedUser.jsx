@@ -11,7 +11,7 @@ const SuggestedUser = ({ avatar, followers, user }) => {
         <Flex align={"center"} gap={2}>
           <Avatar src={avatar} name={user} size={"md"} />
           <VStack align={"start"} spacing={1}>
-            <Box className={"usernameSuggestedHeader"} fontSize={12}>
+            <Box fontSize={12} fontWeight={600} color={"#000"}>
               {user}
             </Box>
 

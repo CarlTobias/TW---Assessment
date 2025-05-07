@@ -12,13 +12,15 @@ const SuggestedUsers = () => {
         <SuggestedHeader />
 
         <Flex justify={"space-between"} align={"center"} w={"100%"}>
-          <Text className={"suggestedHeader"} fontSize={12}>
+          <Text fontSize={12} fontWeight={700} color={"#00000099"}>
             Suggested for You
           </Text>
 
           <Text
-            className={"seeAllSuggested"}
             fontSize={12}
+            fontWeight={700}
+            color={"#000"}
+            cursor={"pointer"}
             _hover={{ color: "#00000099" }}
           >
             See All

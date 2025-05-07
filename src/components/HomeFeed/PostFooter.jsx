@@ -55,11 +55,11 @@ const PostFooter = ({ username }) => {
         </Box>
       </Flex>
 
-      <Text className={"likes"} px={5} py={0}>
+      <Text px={5} py={0} fontWeight={500} color={"#FFF"}>
         {likes === 1 ? `${likes} like` : `${likes} likes`}
       </Text>
 
-      <Flex className={"comment"} px={5} pt={2} pb={0}>
+      <Flex px={5} pt={2} pb={0} fontWeight={600} color={"#FFF"}>
         <Text>
           {username}{" "}
           <Text as={"span"} fontWeight={300}>
@@ -78,7 +78,14 @@ const PostFooter = ({ username }) => {
         </Text>
       </Flex>
 
-      <Text className={"viewComments"} fontSize={"sm"} px={5} pt={0} pb={4}>
+      <Text
+        fontSize={"sm"}
+        px={5}
+        pt={0}
+        pb={4}
+        fontWeight={400}
+        color={"#FFF7EF99"}
+      >
         View all comments
       </Text>
     </>

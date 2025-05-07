@@ -11,3 +11,13 @@
 body {
   font-family: 'Montserrat';
 }
+
+
+/* AuthForm Font */
+.titleText {
+    font-family: 'Pacifico';
+}
+
+Input {
+    font-family: 'Montserrat';
+}
