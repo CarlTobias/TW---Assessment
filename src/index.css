@@ -8,8 +8,29 @@
   src: url('/fonts/Montserrat-VariableFont.ttf');
 }
 
+
+/* Body */
 body {
   font-family: 'Montserrat';
+}
+
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2E2E2E;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5A5A5A;
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #777777;
 }
 
 

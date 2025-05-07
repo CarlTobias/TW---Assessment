@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 
-import { Box, Flex, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Text,
+} from "@chakra-ui/react";
 
 import { IoPawOutline } from "react-icons/io5";
 import { IoPaw } from "react-icons/io5";
 import { FaRegComment } from "react-icons/fa";
 
-const PostFooter = ({ username }) => {
+const PostFooter = ({ username, isProfilePage }) => {
   const [like, setLike] = useState(false);
   const [likes, setLikes] = useState(0);
 
@@ -24,70 +32,109 @@ const PostFooter = ({ username }) => {
     }
   };
 
-  const showncaption = caption.length > 150 ? caption.slice(0, 150) + "..." : caption;
+  const showncaption =
+    caption.length > 125 ? caption.slice(0, 125) + "..." : caption;
 
   return (
     <>
-      <Flex
-        justify={"left"}
-        align={"center"}
-        gap={4}
-        w={"100%"}
-        p={4}
-        pb={2}
-        m={0}
-      >
-        <Box cursor={"pointer"} fontSize={25} onClick={handleLike}>
-          {!like ? (
-            <IoPawOutline color={"#95CFF7"} />
+      <Box mt={"auto"}>
+        <Flex
+          justify="left"
+          align="center"
+          gap={isProfilePage ? 2 : 4}
+          w="100%"
+          p={isProfilePage ? 0 : 4}
+          pb={2}
+          m={0}
+        >
+          <Box cursor="pointer" fontSize={25} onClick={handleLike}>
+            {!like ? (
+              <IoPawOutline color="#95CFF7" />
+            ) : (
+              <IoPaw color="#95CFF7" />
+            )}
+          </Box>
+
+          {isProfilePage ? (
+            <Text fontWeight={500} color="#FFF">
+              {likes === 1 ? "1 like" : `${likes} likes`}
+            </Text>
           ) : (
-            <IoPaw
-              color={"#95CFF7"}
-              style={{
-                filter: "drop-shadow(0 0 5px #4A4971)",
-              }}
-            />
+            <Box cursor="pointer" fontSize={25}>
+              <FaRegComment color="#F2D47E" />
+            </Box>
           )}
-        </Box>
+        </Flex>
 
-        <Box cursor={"pointer"} fontSize={25}>
-          <FaRegComment color={"#F2D47E"} />
-        </Box>
-      </Flex>
-
-      <Text px={5} py={0} fontWeight={500} color={"#FFF"}>
-        {likes === 1 ? `${likes} like` : `${likes} likes`}
-      </Text>
-
-      <Flex px={5} pt={2} pb={0} fontWeight={600} color={"#FFF"}>
-        <Text>
-          {username}{" "}
-          <Text as={"span"} fontWeight={300}>
-            {showFullCaption ? caption : showncaption}
+        {!isProfilePage && (
+          <Text px={5} py={0} fontWeight={500} color="#FFF">
+            {likes === 1 ? "1 like" : `${likes} likes`}
           </Text>
-          <Text
-            as={"span"}
-            fontWeight={400}
-            color={"#FFF7EF99"}
-            cursor={"pointer"}
-            onClick={() => setShowFullCaption(!showFullCaption)}
-          >
-            {" "}
-            {showFullCaption ? "See less" : "See More"}
-          </Text>
-        </Text>
-      </Flex>
+        )}
 
-      <Text
-        fontSize={"sm"}
-        px={5}
-        pt={0}
-        pb={4}
-        fontWeight={400}
-        color={"#FFF7EF99"}
-      >
-        View all comments
-      </Text>
+        {!isProfilePage && (
+          <>
+            <Flex px={5} pt={2} pb={0} fontWeight={600} color={"#FFF"}>
+              <Text>
+                {username}{" "}
+                <Text as={"span"} fontWeight={300}>
+                  {showFullCaption ? caption : showncaption}
+                </Text>
+                <Text
+                  as={"span"}
+                  fontWeight={400}
+                  color={"#FFF7EF99"}
+                  cursor={"pointer"}
+                  onClick={() => setShowFullCaption(!showFullCaption)}
+                >
+                  {" "}
+                  {showFullCaption ? "See less" : "See More"}
+                </Text>
+              </Text>
+            </Flex>
+
+            <Text
+              fontSize={"sm"}
+              px={5}
+              py={2}
+              fontWeight={400}
+              color={"#FFF7EF99"}
+            >
+              View all comments
+            </Text>
+          </>
+        )}
+
+        <Flex
+          justify={"space-between"}
+          align={"center"}
+          gap={2}
+          w={"100%"}
+          pb={5}
+          px={isProfilePage ? 0 : 5}
+        >
+          <InputGroup>
+            <Input
+              variant={"flushed"}
+              fontSize={14}
+              placeholder={"Bark something..."}
+              _placeholder={{ color: "#FFFFFF99" }}
+            />
+            <InputRightElement>
+              <Button
+                background={"transparent"}
+                fontWeight={600}
+                fontSize={14}
+                color={"#FFF"}
+                cursor={"pointer"}
+                _hover={{ color: "#E6883E" }}
+              >
+                Post
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+        </Flex>
+      </Box>
     </>
   );
 };

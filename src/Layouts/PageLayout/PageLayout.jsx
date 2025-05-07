@@ -9,7 +9,7 @@ const PageLayout = () => {
   const { pathname } = useLocation();
   return (
     <>
-      <Flex direction={"column"} minH={"100vh"} bg={"#FFF7EF"}>
+      <Flex direction={"column"} minH={"100vh"} bg={"#FFF"}>
         {/* TopBar on Top */}
         {pathname !== "/WooflesAuth" && (
           <Box h={"6vh"}>
