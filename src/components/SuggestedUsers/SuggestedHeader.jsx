@@ -15,7 +15,7 @@ const SuggestedHeader = () => {
         </Flex>
         <Link
           as={RouterLink}
-          to={"/wooflesAuth"}
+          to={"/wooflesAuth?authtype=login"}
           fontSize={14}
           fontWeight={"500"}
           color={"#757DAC"}
