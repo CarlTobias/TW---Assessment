@@ -68,9 +68,11 @@ app.post("/api/login", async (req, res) => {
       return res.status(400).json({ error: "Incorrect Password." });
     }
 
-    res
-      .status(200)
-      .json({ message: "Login successful", username: user.username });
+    const { _id, username, email } = user;
+    res.status(200).json({
+      message: "Login successful",
+      user: { _id: user._id, username: user.username, email: user.email },
+    });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ error: "Login Failed" });
