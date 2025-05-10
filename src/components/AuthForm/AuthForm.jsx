@@ -1,104 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-import {
-  Box,
-  Button,
-  Flex,
-  Input,
-  Text,
-  useToast, // Try to use this useToast when displaying all error messages instead of the ugly popups
-  VStack,
-} from "@chakra-ui/react";
-import { useLocation, useNavigate } from "react-router-dom";
-
-import axios from "axios";
+import { Box, Button, Flex, Input, Text, VStack } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const location = useLocation();
+
   const navigate = useNavigate();
 
-  const queryParams = new URLSearchParams(location.search);
-  const authtype = queryParams.get("authtype");
-
-  useEffect(() => {
-    setIsLogin(authtype !== "signup");
-  }, [authtype]);
-
   const [inputs, setInputs] = useState({
-    username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
 
-  const toast = useToast();
-  const handleAuth = async () => {
-    if (
-      !inputs.email ||
-      !inputs.password ||
-      (!isLogin && (!inputs.username || !inputs.confirmPassword))
-    ) {
+  const handleAuth = () => {
+    if (!inputs.email || !inputs.password) {
       alert("Please fill out all the fields");
       return;
     }
 
-    if (!isLogin && inputs.password !== inputs.confirmPassword) {
-      alert("Passwords do not match.");
-      return;
-    }
-
-    try {
-      if (isLogin) {
-        const response = await axios.post("http://localhost:3000/api/login", {
-          email: inputs.email,
-          password: inputs.password,
-        });
-
-        console.log(response.data);
-        navigate("/wooflesHome");
-      } else {
-        if (inputs.password !== inputs.confirmPassword) {
-          alert("Passwords do not match.");
-          return;
-        }
-        const response = await axios.post(
-          "http://localhost:3000/api/register",
-          {
-            username: inputs.username,
-            email: inputs.email,
-            password: inputs.password,
-          }
-        );
-
-        console.log(response.data);
-
-        toast({
-          title: "Account Created.",
-          description:
-            response.data.message ||
-            "Your account has been created successfully.",
-          status: "success",
-          duration: 5000, // 5 seconds
-          isClosable: true,
-        });
-
-        setInputs({
-          username: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        });
-
-        navigate("/wooflesAuth?authtype=login");
-      }
-    } catch (error) {
-      console.error(
-        "Authentication failed:",
-        error.response?.data || error.message
-      );
-      alert("Authentication failed. Try again.");
-    }
+    navigate("/wooflesHome");
   };
 
   return (
@@ -108,22 +30,6 @@ const AuthForm = () => {
           <Text className="titleText" mb={0} fontSize={"60px"}>
             Woofles
           </Text>
-
-          {!isLogin ? (
-            <Input
-              bg={"#534F4C"}
-              border={"none"}
-              borderRadius={2}
-              placeholder="Enter Username"
-              _placeholder={{ color: "#BEBEBE" }}
-              fontSize={14}
-              type="text"
-              value={inputs.username}
-              onChange={(e) =>
-                setInputs({ ...inputs, username: e.target.value })
-              }
-            />
-          ) : null}
 
           <Input
             bg={"#534F4C"}
@@ -185,20 +91,9 @@ const AuthForm = () => {
               </Box>
 
               <Box
+                onClick={() => setIsLogin(!isLogin)}
                 color={"#E6883E"}
                 cursor={"pointer"}
-                onClick={() => {
-                  setIsLogin(!isLogin);
-                  setInputs({
-                    username: "",
-                    email: "",
-                    password: "",
-                    confirmPassword: "",
-                  });
-                  navigate(
-                    `/wooflesAuth?authtype=${isLogin ? "signup" : "login"}`
-                  );
-                }}
               >
                 {isLogin ? "Sign Up" : "Log In"}
               </Box>
