@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
 const authStore = create((set) => ({
   user: JSON.parse(localStorage.getItem("woofles-user")) || null,
@@ -16,4 +16,4 @@ const authStore = create((set) => ({
   },
 }));
 
-export default authStore
+export default authStore;
