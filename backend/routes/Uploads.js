@@ -1,6 +1,6 @@
 import fs from "fs";
 import express from "express";
-import cloudinary from '../config/cloudinary.js';
+import cloudinary from "../config/cloudinary.js";
 import upload from "../middleware/upload.js";
 import Post from "../models/Post.js";
 
@@ -13,7 +13,7 @@ router.post("/api/upload", upload.single("image"), async (req, res) => {
     // Upload image to Cloudinary
     const cloudinaryResult = await cloudinary.uploader.upload(req.file.path);
 
-    // Delete the local file
+    // Delete the local file to save storage
     fs.unlinkSync(req.file.path);
 
     // Create new post with the uploaded image URL
@@ -30,6 +30,5 @@ router.post("/api/upload", upload.single("image"), async (req, res) => {
     res.status(500).json({ error: "Something went wrong uploading the post" });
   }
 });
-
 
 export default router;

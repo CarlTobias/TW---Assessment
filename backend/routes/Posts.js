@@ -1,30 +1,26 @@
 import express from "express";
-import upload from "../middleware/upload.js";
-import cloudinary from "../utils/cloudinary.js";
 import Post from "../models/Post.js";
 
 const router = express.Router();
 
-// Route for uploading image
-router.post("/api/upload", upload.single("image"), async (req, res) => {
+// Route to get all posts (or posts by a specific user)
+router.get("/api/posts", async (req, res) => {
   try {
-    const { caption, userId } = req.body;
+    const { userId } = req.query; // If you want to filter by user ID
 
-    // Upload image to Cloudinary
-    const cloudinaryResult = await cloudinary.uploader.upload(req.file.path);
+    let posts;
+    if (userId) {
+      // Fetch posts for a specific user, sorted by createdAt in descending order
+      posts = await Post.find({ user: userId }).sort({ createdAt: -1 });
+    } else {
+      // Fetch all posts, sorted by createdAt in descending order
+      posts = await Post.find().sort({ createdAt: -1 });
+    }
 
-    // Create new post with the uploaded image URL
-    const newPost = new Post({
-      imageUrl: cloudinaryResult.secure_url,
-      caption,
-      user: userId,
-    });
-
-    await newPost.save();
-    res.status(201).json(newPost);
+    res.status(200).json(posts);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Something went wrong uploading the post" });
+    res.status(500).json({ error: "Something went wrong fetching the posts" });
   }
 });
 

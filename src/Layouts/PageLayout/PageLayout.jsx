@@ -41,7 +41,10 @@ const PageLayout = () => {
         </Flex>
       </Flex>
 
-      <UploadForm isOpen={isOpen} onClose={onClose} />
+      <UploadForm
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </>
   );
 };

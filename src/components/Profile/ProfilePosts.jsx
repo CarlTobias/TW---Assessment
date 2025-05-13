@@ -7,6 +7,8 @@ import authStore from "../../stores/authStore";
 const ProfilePosts = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
+  const [image, setImage] = useState(null);
+  const [caption, setCaption] = useState("");
   const user = authStore((store) => store.user);
 
   useEffect(() => {
@@ -26,7 +28,31 @@ const ProfilePosts = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [user]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!image || !caption) {
+      console.log("Please fill in both the image and caption fields.");
+      return;
+    }
+
+    const newPost = { imageUrl: image, caption: caption, userId: user?._id };
+
+    try {
+      const response = await fetch("http://localhost:3000/api/upload", {
+        method: "POST",
+        body: JSON.stringify(newPost),
+        headers: { "Content-Type": "application/json" },
+      });
+      const post = await response.json();
+
+      setPosts([post, ...posts]);
+    } catch (err) {
+      console.error("Error uploading post:", err);
+    }
+  };
 
 
   return (

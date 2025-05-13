@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import path from "path";
 import { fileURLToPath } from "url";
 import User from "./models/User.js";
+import postRoutes from "./routes/Posts.js";
 import uploadRoutes from "./routes/Uploads.js";
 
 
@@ -93,6 +94,9 @@ const __dirname = path.dirname(__filename);
 
 // Serve uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use(postRoutes);
+
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
