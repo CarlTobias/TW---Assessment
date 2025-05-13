@@ -19,7 +19,7 @@ const SuggestedHeader = () => {
       <Flex justify={"space-between"} align={"center"} w={"100%"}>
         <Link
           as={RouterLink}
-          to={`/profile/${user.username}`}
+          to={`/woofles/${user?._id}`}
           display="flex"
           alignItems="center"
           _hover={{ textDecoration: "none" }}

@@ -8,8 +8,11 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import authStore from "../../stores/authStore";
 
 const ProfileHeader = () => {
+  const user = authStore((store) => store.user)
+
   return (
     <>
       <Flex
@@ -24,9 +27,9 @@ const ProfileHeader = () => {
           size={"2xl"}
         >
           <Avatar
-            src={"/images/dogimg3.jpeg"}
+            src={user.profilePic}
             alt={"userprof.img"}
-            name={"LeiBaley"}
+            name={user.username}
             border={"2px solid black"}
           />
         </AvatarGroup>
@@ -44,7 +47,7 @@ const ProfileHeader = () => {
               fontWeight={600}
               color={"#3C3835"}
             >
-              LeiBaley
+              {user.username}
             </Text>
             <Flex justify={"center"} align={"center"} gap={4}>
               <Button

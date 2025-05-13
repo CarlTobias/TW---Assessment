@@ -1,13 +1,20 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 import bcrypt from "bcrypt";
+import path from "path";
+import { fileURLToPath } from "url";
 import User from "./models/User.js";
+import uploadRoutes from "./routes/Uploads.js";
 
+
+dotenv.config();
 const app = express();
 
 // Middleware
 app.use(express.json());
+
 // Running both frontend and backend simultaneously
 app.use(
   cors({
@@ -19,7 +26,7 @@ app.use(
 
 // Setting up Mongoose
 mongoose
-  .connect("mongodb://localhost:27017/Woofles", {
+  .connect(process.env.WOOFLESDB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -78,6 +85,14 @@ app.post("/api/login", async (req, res) => {
     res.status(500).json({ error: "Login Failed" });
   }
 });
+
+// Upload
+app.use(uploadRoutes);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve uploads folder
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");

@@ -22,7 +22,7 @@ import { IoPaw } from "react-icons/io5";
 import { FaComment } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
-const ProfilePost = ({ img }) => {
+const ProfilePost = ({ img, caption }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -77,7 +77,13 @@ const ProfilePost = ({ img }) => {
               mx={"auto"}
             >
               <Box flex={1.5} borderLeftRadius={4} overflow={"hidden"}>
-                <Image src={img} alt="post" w={"100%"} maxH={"95vh"} objectFit={"cover"} />
+                <Image
+                  src={img}
+                  alt="post"
+                  w={"100%"}
+                  maxH={"95vh"}
+                  objectFit={"cover"}
+                />
               </Box>
 
               <Flex
@@ -102,6 +108,10 @@ const ProfilePost = ({ img }) => {
                     <MdDelete size={24} color={"#FFFFFFCC"} />
                   </Box>
                 </Flex>
+
+                <Text color="#FFFFFFCC" fontSize={14} mb={4}>
+                  {caption}
+                </Text>
 
                 <Divider my={4} backgroundColor={"#FFFFFFCC"} />
 

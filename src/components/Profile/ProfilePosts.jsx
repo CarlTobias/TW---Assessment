@@ -1,16 +1,33 @@
 import React, { useEffect, useState } from "react";
 
-import { Box, Grid, GridItem, Skeleton, useDisclosure } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Skeleton } from "@chakra-ui/react";
 import ProfilePost from "./ProfilePost";
+import authStore from "../../stores/authStore";
 
 const ProfilePosts = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [posts, setPosts] = useState([]);
+  const user = authStore((store) => store.user);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    const fetchPosts = async () => {
+      try {
+        const userId = user?._id;
+        const response = await fetch(
+          `http://localhost:3000/api/posts?userId=${userId}`
+        );
+        const data = await response.json();
+        setPosts(data);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPosts();
   }, []);
+
 
   return (
     <>
@@ -19,23 +36,21 @@ const ProfilePosts = () => {
         w={"100%"}
         gap={1}
       >
-        {isLoading &&
-          [0, 1, 2, 3, 4, 5].map((_, idx) => (
-            <GridItem key={idx} align={"flex-start"}>
-              <Skeleton>
-                <Box h={350}>contents wrapped</Box>
-              </Skeleton>
-            </GridItem>
-          ))}
-
-        {!isLoading && (
-          <>
-            <ProfilePost img="/images/dogimg1.jpeg" />
-            <ProfilePost img="/images/dogimg2.jpeg" />
-            <ProfilePost img="/images/dogimg3.jpeg" />
-            <ProfilePost img="/images/dogimg4.jpeg" />
-          </>
-        )}
+        {isLoading
+          ? [0, 1, 2, 3, 4, 5].map((_, idx) => (
+              <GridItem key={idx}>
+                <Skeleton>
+                  <Box h={350}></Box>
+                </Skeleton>
+              </GridItem>
+            ))
+          : posts.map((post) => (
+              <ProfilePost
+                key={post._id}
+                img={post.imageUrl}
+                caption={post.caption}
+              />
+            ))}
       </Grid>
     </>
   );

@@ -8,6 +8,7 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
+import authStore from "../../stores/authStore";
 
 import { HiMenu } from "react-icons/hi";
 import { PiDog } from "react-icons/pi";
@@ -15,7 +16,7 @@ import { SiDatadog } from "react-icons/si";
 import { IoSettingsOutline } from "react-icons/io5";
 
 const DropdownMenu = () => {
-  const uid = localStorage.getItem("uid");
+  const user = authStore((store) => store.user)
 
   return (
     <>
@@ -32,7 +33,7 @@ const DropdownMenu = () => {
         <MenuList bg="#3C3835" color="#FFF7EF" mr={"3px"}>
           <MenuItem
             as={RouterLink}
-            to={`/woofles/${uid}`}
+            to={`/woofles/${user?._id}`}
             bg={"none"}
             gap={4}
             variant="ghost"
