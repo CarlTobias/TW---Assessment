@@ -1,19 +1,37 @@
 import React, { useState } from "react";
 
-import { Avatar, Box, Button, Flex, VStack } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, Link, VStack } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
 
-const SuggestedUser = ({ avatar, followers, user }) => {
+const SuggestedUser = ({ avatar, followers, user, userID }) => {
   const [isFollowed, setIsFollowed] = useState(false);
 
   return (
     <>
       <Flex justify={"space-between"} align={"center"} w={"100%"}>
         <Flex align={"center"} gap={2}>
-          <Avatar src={avatar} name={user} size={"md"} />
+          <Link
+            as={RouterLink}
+            to={`/woofles/${userID}`}
+            _hover={{ textDecoration: "none" }}
+          >
+            <Avatar src={avatar} name={user} size={"md"} />
+          </Link>
           <VStack align={"start"} spacing={1}>
-            <Box fontSize={12} fontWeight={600} color={"#000"}>
-              {user}
-            </Box>
+            <Link
+              as={RouterLink}
+              to={`/woofles/${userID}`}
+              _hover={{ textDecoration: "none" }}
+            >
+              <Box
+                fontSize={12}
+                fontWeight={600}
+                color={"#000"}
+                cursor={"pointer"}
+              >
+                {user}
+              </Box>
+            </Link>
 
             <Box fontSize={11} color={"#00000099"}>
               {followers} followers

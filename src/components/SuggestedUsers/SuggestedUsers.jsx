@@ -1,11 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { Box, Flex, Text, VStack } from "@chakra-ui/react";
 
 import SuggestedHeader from "./SuggestedHeader";
 import SuggestedUser from "./SuggestedUser";
+import authStore from "../../stores/authStore";
 
 const SuggestedUsers = () => {
+  const [suggested, setSuggested] = useState([]);
+  const currentUser = authStore((store) => store.user);
+
+  useEffect(() => {
+    const fetchSuggestedUsers = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:3000/api/user/suggested/${currentUser._id}`
+        );
+        const data = await res.json();
+        setSuggested(data);
+      } catch (error) {
+        console.error("Failed to fetch suggested users:", error);
+      }
+    };
+
+    if (currentUser?._id) {
+      fetchSuggestedUsers();
+    }
+  }, [currentUser]);
+
   return (
     <>
       <VStack px={6} py={5} gap={4}>
@@ -27,21 +49,15 @@ const SuggestedUsers = () => {
           </Text>
         </Flex>
 
-        <SuggestedUser
-          avatar="/images/dogimg5.jpg"
-          followers={5261}
-          user={"Svenniee_"}
-        />
-        <SuggestedUser
-          avatar="/images/dogimg6.jpeg"
-          followers={2519}
-          user={"Luckyy7"}
-        />
-        <SuggestedUser
-          avatar="/images/dogimg4.jpeg"
-          followers={5}
-          user={"LukeFlukeSpam"}
-        />
+        {suggested.map((user) => (
+          <SuggestedUser
+            key={user._id}
+            userID={user._id}
+            avatar={user.profilePic}
+            followers={user.followers.length || 0}
+            user={user.username}
+          />
+        ))}
 
         <Box alignSelf={"start"} mt={5} fontSize={12} color={"#6EA4EC"}>
           © 2025 Built By CoralReef

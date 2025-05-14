@@ -10,8 +10,9 @@ import {
 } from "@chakra-ui/react";
 import authStore from "../../stores/authStore";
 
-const ProfileHeader = () => {
-  const user = authStore((store) => store.user)
+const ProfileHeader = ({ user }) => {
+  const me = authStore((s) => s.user);
+  const isOwnProfile = me?._id === user?._id;
 
   return (
     <>
@@ -49,23 +50,25 @@ const ProfileHeader = () => {
             >
               {user.username}
             </Text>
-            <Flex justify={"center"} align={"center"} gap={4}>
-              <Button
-                h={"100%"}
-                px={3}
-                py={1}
-                borderRadius={5}
-                backgroundColor={"#3C383580"}
-                fontSize={{ base: 16, sm: 18, md: 20 }}
-                fontWeight={400}
-                _hover={{
-                  backgroundColor: "#6EA4EC",
-                  color: "#000",
-                }} /* change this it's abysmal */
-              >
-                Edit Profile
-              </Button>
-            </Flex>
+            {isOwnProfile && (
+              <Flex justify={"center"} align={"center"} gap={4}>
+                <Button
+                  h={"100%"}
+                  px={3}
+                  py={1}
+                  borderRadius={5}
+                  backgroundColor={"#3C383580"}
+                  fontSize={{ base: 16, sm: 18, md: 20 }}
+                  fontWeight={400}
+                  _hover={{
+                    backgroundColor: "#6EA4EC",
+                    color: "#000",
+                  }} /* change this it's abysmal */
+                >
+                  Edit Profile
+                </Button>
+              </Flex>
+            )}
           </Flex>
 
           <Flex

@@ -8,7 +8,7 @@ import { fileURLToPath } from "url";
 import User from "./models/User.js";
 import postRoutes from "./routes/Posts.js";
 import uploadRoutes from "./routes/Uploads.js";
-
+import userRoutes from "./routes/Users.js";
 
 dotenv.config();
 const app = express();
@@ -67,19 +67,23 @@ app.post("/api/login", async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ error: "User Not Found." });
-    }
+    if (!user) return res.status(400).json({ error: "User Not Found." });
 
     const isPasswordsMatch = await bcrypt.compare(password, user.password);
-    if (!isPasswordsMatch) {
+    if (!isPasswordsMatch)
       return res.status(400).json({ error: "Incorrect Password." });
-    }
 
-    const { _id, username, email: userEmail } = user;
     res.status(200).json({
       message: "Login successful",
-      user: { _id: user._id, username: user.username, email: userEmail },
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        bio: user.bio,
+        profilePic: user.profilePic,
+        followers: user.followers,
+        following: user.following,
+      },
     });
   } catch (error) {
     console.error("Login error:", error);
@@ -97,6 +101,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(postRoutes);
 
+app.use("/api/user", userRoutes);
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");

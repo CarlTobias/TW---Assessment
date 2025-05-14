@@ -2,24 +2,24 @@ import React, { useEffect, useState } from "react";
 
 import { Box, Grid, GridItem, Skeleton } from "@chakra-ui/react";
 import ProfilePost from "./ProfilePost";
-import authStore from "../../stores/authStore";
 
-const ProfilePosts = () => {
+const ProfilePosts = ({ user }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
-  const [image, setImage] = useState(null);
-  const [caption, setCaption] = useState("");
-  const user = authStore((store) => store.user);
+  // const [image, setImage] = useState(null);
+  // const [caption, setCaption] = useState("");
 
   useEffect(() => {
+    if (!user?._id) return;
+
     const fetchPosts = async () => {
       try {
-        const userId = user?._id;
+        const userId = user._id;
         const response = await fetch(
           `http://localhost:3000/api/posts?userId=${userId}`
         );
         const data = await response.json();
-        setPosts(data);
+        setPosts(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching posts:", error);
       } finally {
@@ -28,7 +28,8 @@ const ProfilePosts = () => {
     };
 
     fetchPosts();
-  }, [user]);
+  }, [user?._id]);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,6 +54,7 @@ const ProfilePosts = () => {
       console.error("Error uploading post:", err);
     }
   };
+  console.log(user);
 
 
   return (

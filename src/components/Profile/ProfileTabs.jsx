@@ -5,7 +5,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { SiDatadog } from "react-icons/si";
 import { IoPaw } from "react-icons/io5";
 
-const ProfileTabs = () => {
+const ProfileTabs = ({ user }) => {
   return (
     <>
       <Flex
