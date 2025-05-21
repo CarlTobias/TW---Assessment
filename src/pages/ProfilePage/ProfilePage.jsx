@@ -6,12 +6,18 @@ import ProfileTabs from "../../components/Profile/ProfileTabs";
 import ProfilePosts from "../../components/Profile/ProfilePosts";
 import authStore from "../../stores/authStore";
 import userProfileStore from "../../stores/userProfileStore";
+import useFetchUserProfile from "../../hooks/useFetchUserProfile";
 
 const ProfilePage = () => {
   const { uid: paramId } = useParams();
-  const me = authStore((s) => s.user); // logged-in user
-  const { profile, setProfile, clearProfile } = userProfileStore();
+  const me = authStore((s) => s.user);
+  const profile = userProfileStore((s) => s.profile);
+  const clearProfile = userProfileStore((s) => s.clearProfile);
+  const setProfile = userProfileStore((s) => s.setProfile);
+
   const [loading, setLoading] = useState(true);
+
+  useFetchUserProfile(paramId);
 
   useEffect(() => {
     if (!paramId) {
@@ -20,34 +26,20 @@ const ProfilePage = () => {
       return;
     }
 
-    // Check if the profile being viewed is the logged-in user's profile
-    if (paramId?.toString() === me?._id?.toString()) {
-      // Show own profile directly (you don’t need to fetch it again)
+    if (paramId === me?._id) {
       setProfile(me);
       setLoading(false);
       return;
     }
 
     setLoading(true);
-    fetch(`http://localhost:3000/api/user/${paramId}`)
-      .then(async (res) => {
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(`Failed to fetch: ${res.status} - ${text}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log("Fetched user profile:", data);
-        setProfile(data);
-      })
-      .catch((err) => {
-        console.error("Error fetching profile:", err);
-      })
-      .finally(() => setLoading(false));
+  }, [paramId, me, setProfile, clearProfile]);
 
-    return () => clearProfile();
-  }, [paramId, me?._id, setProfile, clearProfile]);
+  useEffect(() => {
+    if (profile && Object.keys(profile).length > 0) {
+      setLoading(false);
+    }
+  }, [profile]);
 
   const userToShow = profile || me;
 

@@ -99,7 +99,7 @@ const __dirname = path.dirname(__filename);
 // Serve uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.use(postRoutes);
+app.use("/api/posts", postRoutes);
 
 app.use("/api/user", userRoutes);
 

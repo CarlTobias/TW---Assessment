@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 
 import {
   Avatar,
@@ -8,11 +8,44 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import axios from "axios";
+
 import authStore from "../../stores/authStore";
 
 const ProfileHeader = ({ user }) => {
   const me = authStore((s) => s.user);
   const isOwnProfile = me?._id === user?._id;
+
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  useEffect(() => {
+    if (!isOwnProfile) {
+      setIsFollowing(user.followers?.includes(me?._id));
+    }
+  }, [user, me, isOwnProfile]);
+
+  const handleFollow = async () => {
+    try {
+      await axios.put(`http://localhost:3000/api/user/follow/${user._id}`, {
+        currentUserId: me._id,
+      });
+      setIsFollowing(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleUnfollow = async () => {
+    try {
+      await axios.put(`http://localhost:3000/api/user/unfollow/${user._id}`, {
+        currentUserId: me._id,
+      });
+      setIsFollowing(false);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
 
   return (
     <>
@@ -50,8 +83,8 @@ const ProfileHeader = ({ user }) => {
             >
               {user.username}
             </Text>
-            {isOwnProfile && (
-              <Flex justify={"center"} align={"center"} gap={4}>
+            <Flex justify={"center"} align={"center"} gap={4}>
+              {isOwnProfile ? (
                 <Button
                   h={"100%"}
                   px={3}
@@ -63,12 +96,29 @@ const ProfileHeader = ({ user }) => {
                   _hover={{
                     backgroundColor: "#6EA4EC",
                     color: "#000",
-                  }} /* change this it's abysmal */
+                  }}
                 >
                   Edit Profile
                 </Button>
-              </Flex>
-            )}
+              ) : (
+                <Button
+                  h={"100%"}
+                  px={3}
+                  py={1}
+                  borderRadius={5}
+                  backgroundColor={isFollowing ? "#eee" : "#3C383580"}
+                  fontSize={{ base: 16, sm: 18, md: 20 }}
+                  fontWeight={400}
+                  _hover={{
+                    backgroundColor: isFollowing ? "#f44336" : "#6EA4EC",
+                    color: "#000",
+                  }}
+                  onClick={isFollowing ? handleUnfollow : handleFollow}
+                >
+                  {isFollowing ? "Unfollow" : "Follow"}
+                </Button>
+              )}
+            </Flex>
           </Flex>
 
           <Flex
@@ -79,21 +129,21 @@ const ProfileHeader = ({ user }) => {
           >
             <Text fontWeight={500}>
               <Text as={"span"} fontWeight={700}>
-                4
+                {user.postsCount || 0}
               </Text>{" "}
               Posts
             </Text>
 
             <Text fontWeight={500}>
               <Text as={"span"} fontWeight={700}>
-                3521
+                {user.followers?.length || 0}
               </Text>{" "}
               Followers
             </Text>
 
             <Text fontWeight={500}>
               <Text as={"span"} fontWeight={700}>
-                69
+                {user.following?.length || 0}
               </Text>{" "}
               Following
             </Text>

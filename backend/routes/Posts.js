@@ -5,7 +5,7 @@ import Post from "../models/Post.js";
 const router = express.Router();
 
 // Route to get all posts (or posts by a specific user)
-router.get("/api/posts", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const { userId } = req.query;
 

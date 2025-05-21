@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router-dom";
 
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import PageLayout from "./Layouts/PageLayout/PageLayout";
@@ -12,6 +12,7 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path="/" element={<Navigate to="/wooflesAuth" replace />} />
         <Route path="/wooflesLanding" element={<LandingPage />} />
         <Route path="/wooflesAuth" element={<AuthPage />} />
 
