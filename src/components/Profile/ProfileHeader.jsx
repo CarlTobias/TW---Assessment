@@ -12,40 +12,48 @@ import axios from "axios";
 
 import authStore from "../../stores/authStore";
 
-const ProfileHeader = ({ user }) => {
+const ProfileHeader = ({ user, refreshProfile }) => {
   const me = authStore((s) => s.user);
   const isOwnProfile = me?._id === user?._id;
 
   const [isFollowing, setIsFollowing] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
 
   useEffect(() => {
-    if (!isOwnProfile) {
-      setIsFollowing(user.followers?.includes(me?._id));
+    if (!isOwnProfile && user?.followers && me?._id) {
+      setIsFollowing(user.followers.includes(me._id));
     }
   }, [user, me, isOwnProfile]);
+  
 
   const handleFollow = async () => {
+    setButtonLoading(true);
     try {
       await axios.put(`http://localhost:3000/api/user/follow/${user._id}`, {
         currentUserId: me._id,
       });
-      setIsFollowing(true);
+      await refreshProfile(); // will cause isFollowing to update in useEffect
     } catch (err) {
       console.error(err);
+    } finally {
+      setButtonLoading(false);
     }
   };
 
   const handleUnfollow = async () => {
+    setButtonLoading(true);
     try {
       await axios.put(`http://localhost:3000/api/user/unfollow/${user._id}`, {
         currentUserId: me._id,
       });
-      setIsFollowing(false);
+      await refreshProfile(); // will cause isFollowing to update in useEffect
     } catch (err) {
       console.error(err);
+    } finally {
+      setButtonLoading(false);
     }
   };
-
+  
 
   return (
     <>
@@ -114,6 +122,7 @@ const ProfileHeader = ({ user }) => {
                     color: "#000",
                   }}
                   onClick={isFollowing ? handleUnfollow : handleFollow}
+                  isLoading={buttonLoading}
                 >
                   {isFollowing ? "Unfollow" : "Follow"}
                 </Button>

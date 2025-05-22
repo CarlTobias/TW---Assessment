@@ -17,23 +17,31 @@ const ProfilePage = () => {
 
   const [loading, setLoading] = useState(true);
 
-  useFetchUserProfile(paramId);
+  const fetchUserProfile = useFetchUserProfile();
 
   useEffect(() => {
-    if (!paramId) {
-      clearProfile();
-      setLoading(false);
-      return;
-    }
+    const loadProfile = async () => {
+      if (!paramId) {
+        clearProfile();
+        setLoading(false);
+        return;
+      }
 
-    if (paramId === me?._id) {
-      setProfile(me);
-      setLoading(false);
-      return;
-    }
+      if (paramId === me?._id) {
+        if (!profile || profile._id !== me._id) {
+          setProfile(me);
+        }
+        setLoading(false);
+      } else {
+        setLoading(true);
+        await fetchUserProfile(paramId);
+        setLoading(false);
+      }
+    };
 
-    setLoading(true);
-  }, [paramId, me, setProfile, clearProfile]);
+    loadProfile();
+  }, [paramId, me]);
+  
 
   useEffect(() => {
     if (profile && Object.keys(profile).length > 0) {
@@ -46,7 +54,11 @@ const ProfilePage = () => {
   return (
     <Container maxW={"container.md"}>
       <Flex flexDirection={"column"} maxW={"100%"} py={10}>
-        <ProfileHeader user={userToShow} loading={loading} />
+        <ProfileHeader
+          user={userToShow}
+          loading={loading}
+          refreshProfile={() => fetchUserProfile(paramId)}
+        />
       </Flex>
       <Flex
         direction={"column"}
@@ -56,11 +68,16 @@ const ProfilePage = () => {
         borderTop={"1px solid #000"}
       >
         <ProfileTabs user={userToShow} loading={loading} />
-        <ProfilePosts user={userToShow} loading={loading} />
+        <ProfilePosts
+          key={userToShow._id}
+          user={userToShow}
+          loading={loading}
+        />
       </Flex>
     </Container>
   );
 };
+
 
 
 export default ProfilePage;

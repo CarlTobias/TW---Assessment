@@ -21,16 +21,6 @@ const PostHeader = ({ avatar, username }) => {
             </Flex>
           </VStack>
         </Flex>
-        <Box cursor={"pointer"}>
-          <Text
-            fontSize={12}
-            fontWeight={700}
-            color={"#FFF"}
-            _hover={{ color: "#E6883E" }}
-          >
-            Unfollow
-          </Text>
-        </Box>
       </Flex>
     </>
   );

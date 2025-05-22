@@ -49,15 +49,18 @@ const SuggestedUsers = () => {
           </Text>
         </Flex>
 
-        {suggested.map((user) => (
-          <SuggestedUser
-            key={user._id}
-            userID={user._id}
-            avatar={user.profilePic}
-            followers={user.followers.length || 0}
-            user={user.username}
-          />
-        ))}
+        {suggested
+          .filter((user) => user._id !== currentUser._id)
+          .map((user) => (
+            <SuggestedUser
+              key={user._id}
+              avatar={user.profilePic}
+              followers={user.followers.length}
+              user={user.username}
+              userID={user._id}
+              me={currentUser}
+            />
+          ))}
 
         <Box alignSelf={"start"} mt={5} fontSize={12} color={"#6EA4EC"}>
           © 2025 Built By CoralReef

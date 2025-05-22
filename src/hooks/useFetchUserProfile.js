@@ -1,26 +1,27 @@
-import { useEffect } from "react";
 import axios from "axios";
 import userProfileStore from "../stores/userProfileStore";
 
-const useFetchUserProfile = (userId) => {
+const useFetchUserProfile = () => {
   const setProfile = userProfileStore((state) => state.setProfile);
+  const clearProfile = userProfileStore((state) => state.clearProfile);
 
-  useEffect(() => {
-    async function fetchProfile() {
-      try {
-        const { data } = await axios.get(
-          `http://localhost:3000/api/user/${userId}`
-        );
-        setProfile(data); // data includes postsCount from your API
-      } catch (error) {
-        console.error("Error fetching user profile:", error);
-      }
+  const fetchProfile = async (userId) => {
+    if (!userId) {
+      clearProfile();
+      return;
     }
 
-    if (userId) fetchProfile();
+    try {
+      const { data } = await axios.get(
+        `http://localhost:3000/api/user/${userId}`
+      );
+      setProfile(data);
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
 
-    return () => userProfileStore.getState().clearProfile();
-  }, [userId, setProfile]);
+  return fetchProfile;
 };
 
 export default useFetchUserProfile;
