@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 import {
   Avatar,
@@ -22,8 +23,19 @@ import { IoPaw } from "react-icons/io5";
 import { FaComment } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
-const ProfilePost = ({ img, caption }) => {
+const ProfilePost = ({ img, caption, postId, onDelete }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/api/posts/${postId}`);
+      onClose();
+      if (onDelete) onDelete(postId);
+    } catch (err) {
+      console.error("Failed to delete post:", err);
+    }
+  };
+
   return (
     <>
       <GridItem
@@ -104,12 +116,15 @@ const ProfilePost = ({ img, caption }) => {
                       LeiBaley
                     </Text>
                   </Flex>
-                  <Box>
-                    <MdDelete size={24} color={"#FFFFFFCC"} />
+                  <Box onClick={handleDelete} cursor="pointer">
+                    <MdDelete
+                      size={24}
+                      color={"#FFFFFFCC"}
+                    />
                   </Box>
                 </Flex>
 
-                <Text color="#FFFFFFCC" fontSize={14} mb={4}>
+                <Text color="#FFFFFFCC" fontSize={14} my={4}>
                   {caption}
                 </Text>
 

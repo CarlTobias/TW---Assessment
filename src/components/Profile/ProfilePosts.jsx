@@ -29,7 +29,6 @@ const ProfilePosts = ({ user }) => {
 
     fetchPosts();
   }, [user?._id]);
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,6 +55,9 @@ const ProfilePosts = ({ user }) => {
   };
   console.log(user);
 
+  const handleDeletePost = (id) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post._id !== id));
+  };
 
   return (
     <>
@@ -75,8 +77,10 @@ const ProfilePosts = ({ user }) => {
           : posts.map((post) => (
               <ProfilePost
                 key={post._id}
+                postId={post._id}
                 img={post.imageUrl}
                 caption={post.caption}
+                onDelete={handleDeletePost}
               />
             ))}
       </Grid>

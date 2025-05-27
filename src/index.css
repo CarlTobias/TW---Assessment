@@ -1,44 +1,57 @@
 @font-face {
-  font-family: 'Pacifico';
-  src: url('/fonts/Pacifico-Regular.ttf');
+  font-family: "Pacifico";
+  src: url("/fonts/Pacifico-Regular.ttf");
 }
 
 @font-face {
-  font-family: 'Montserrat';
-  src: url('/fonts/Montserrat-VariableFont.ttf');
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat-VariableFont.ttf");
 }
-
 
 /* Body */
-body {
-  font-family: 'Montserrat';
+* {
+  scrollbarwidth: "thin";
+  scrollbarcolor: "#888 transparent";
 }
 
+body {
+  font-family: "Montserrat";
+}
 
 /* Scrollbar */
+/* WebKit browsers (Chrome, Safari) */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #2E2E2E;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #5A5A5A;
-  border-radius: 50px;
+  background: #888;
+  border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #777777;
+  background: #555;
+}
+
+/* Firefox */
+* {
+  /* applies thin scrollbar everywhere */
+  scrollbar-width: thin;
+  /* thumb color, track transparent */
+  scrollbar-color: #888 transparent;
 }
 
 
 /* AuthForm Font */
 .titleText {
-    font-family: 'Pacifico';
+  font-family: "Pacifico";
 }
 
 Input {
-    font-family: 'Montserrat';
+  font-family: "Montserrat";
 }

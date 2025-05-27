@@ -1,36 +1,55 @@
-import React from "react";
-
-import { Container, Flex } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Container, Flex, Spinner, Text } from "@chakra-ui/react";
 import FeedPost from "./FeedPost";
+import axios from "axios";
 
 const HomeFeed = () => {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/api/posts");
+        setPosts(res.data);
+      } catch (err) {
+        console.error("Error fetching posts:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  if (loading) {
+    return (
+      <Flex justify="center" align="center" height="100vh">
+        <Spinner size="xl" color="orange.300" />
+      </Flex>
+    );
+  }
+
   return (
-    <>
-      <Container maxW={"container.sm"} py={0} px={2}>
-        <Flex flexDirection={"column"} gap={10}>
-          <FeedPost
-            img={"/images/dogimg1.jpeg"}
-            username={"BevAndShadow"}
-            avatar={"/images/dogimg1.jpeg"}
-          />
-          <FeedPost
-            img={"/images/dogimg2.jpeg"}
-            username={"L&L"}
-            avatar={"/images/dogimg2.jpeg"}
-          />
-          <FeedPost
-            img={"/images/dogimg3.jpeg"}
-            username={"LeiBaley"}
-            avatar={"/images/dogimg3.jpeg"}
-          />
-          <FeedPost
-            img={"/images/dogimg4.jpeg"}
-            username={"LukiePookie"}
-            avatar={"/images/dogimg4.jpeg"}
-          />
-        </Flex>
-      </Container>
-    </>
+    <Container maxW={"container.sm"} py={0} px={2}>
+      <Flex flexDirection={"column"} gap={10}>
+        {posts.length === 0 ? (
+          <Text color="gray.400" textAlign="center">
+            No posts to show.
+          </Text>
+        ) : (
+          posts.map((post) => (
+            <FeedPost
+              key={post._id}
+              img={post.imageUrl}
+              username={post.user?.username}
+              avatar={post.user?.profilePic}
+              caption={post.caption}
+            />
+          ))
+        )}
+      </Flex>
+    </Container>
   );
 };
 

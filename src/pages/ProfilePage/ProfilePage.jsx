@@ -28,9 +28,8 @@ const ProfilePage = () => {
       }
 
       if (paramId === me?._id) {
-        if (!profile || profile._id !== me._id) {
-          setProfile(me);
-        }
+        setLoading(true);
+        await fetchUserProfile(paramId);
         setLoading(false);
       } else {
         setLoading(true);
