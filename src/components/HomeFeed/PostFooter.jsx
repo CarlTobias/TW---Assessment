@@ -12,7 +12,15 @@ import {
 import { IoPawOutline, IoPaw } from "react-icons/io5";
 import { FaRegComment } from "react-icons/fa";
 
-const PostFooter = ({ username, caption = "", isProfilePage }) => {
+const PostFooter = ({
+  username,
+  caption = "",
+  isProfilePage,
+  newComment,
+  setNewComment,
+  handleCommentSubmit,
+  loadingComment,
+}) => {
   const [like, setLike] = useState(false);
   const [likes, setLikes] = useState(0);
   const [showFullCaption, setShowFullCaption] = useState(false);
@@ -98,8 +106,14 @@ const PostFooter = ({ username, caption = "", isProfilePage }) => {
           <Input
             variant="flushed"
             fontSize={14}
+            color={"#FFF"}
             placeholder="Bark something..."
             _placeholder={{ color: "#FFFFFF99" }}
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleCommentSubmit();
+            }}
           />
           <InputRightElement>
             <Button
@@ -109,6 +123,8 @@ const PostFooter = ({ username, caption = "", isProfilePage }) => {
               color="#FFF"
               cursor="pointer"
               _hover={{ color: "#E6883E" }}
+              isLoading={loadingComment}
+              onClick={handleCommentSubmit}
             >
               Post
             </Button>

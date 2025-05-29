@@ -9,6 +9,7 @@ import User from "./models/User.js";
 import postRoutes from "./routes/Posts.js";
 import uploadRoutes from "./routes/Uploads.js";
 import userRoutes from "./routes/Users.js";
+import commentRoutes from "./routes/Comments.js";
 
 dotenv.config();
 const app = express();
@@ -102,6 +103,11 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/posts", postRoutes);
 
 app.use("/api/user", userRoutes);
+
+
+
+app.use("/api/comments", commentRoutes);
+
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");

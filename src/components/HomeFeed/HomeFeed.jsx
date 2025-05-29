@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Flex, Spinner, Text } from "@chakra-ui/react";
 import FeedPost from "./FeedPost";
 import axios from "axios";
@@ -11,6 +11,7 @@ const HomeFeed = () => {
     const fetchPosts = async () => {
       try {
         const res = await axios.get("http://localhost:3000/api/posts");
+        console.log("Fetched posts from backend:", res.data);
         setPosts(res.data);
       } catch (err) {
         console.error("Error fetching posts:", err);
@@ -21,6 +22,7 @@ const HomeFeed = () => {
 
     fetchPosts();
   }, []);
+  
 
   if (loading) {
     return (

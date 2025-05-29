@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 import {
@@ -25,16 +25,56 @@ import { MdDelete } from "react-icons/md";
 
 const ProfilePost = ({ img, caption, postId, onDelete }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLiked, setIsLiked] = useState(false);
+  const [newComment, setNewComment] = useState("");
+  const [loadingComment, setLoadingComment] = useState(false);
+  const [comments, setComments] = useState([]);
+
+
+  useEffect(() => {
+    if (isOpen) {
+      console.log("Fetching comments for postId:", postId);
+      axios
+        .get(`http://localhost:3000/api/comments/${postId}`)
+        .then((res) => setComments(res.data))
+        .catch((err) => console.error("Failed to fetch comments:", err));
+
+    }
+  }, [isOpen, postId]);
+
+  const handleCommentSubmit = async () => {
+    if (!newComment.trim()) return;
+    try {
+      setLoadingComment(true);
+      const res = await axios.post(
+        `http://localhost:3000/api/comments/${postId}`,
+        {
+          userId: "currentLoggedInUserId", // Replace with actual user ID
+          text: newComment,
+        }
+      );
+
+      setComments((prev) => [...prev, res.data]);
+      setNewComment("");
+    } catch (err) {
+      console.error("Failed to post comment:", err);
+    } finally {
+      setLoadingComment(false);
+    }
+  };
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/posts/${postId}`);
+      await axios.delete(`http://localhost:3000/api/posts/${postId}`);
       onClose();
       if (onDelete) onDelete(postId);
     } catch (err) {
       console.error("Failed to delete post:", err);
     }
   };
+
+
+  
 
   return (
     <>
@@ -60,9 +100,9 @@ const ProfilePost = ({ img, caption, postId, onDelete }) => {
           transition={"all 0.3s"}
         >
           <Flex justify={"center"} align={"center"} gap={25} color={"#FFFFFF"}>
-            <Flex justify={"center"} align={"center"} gap={1}>
-              <IoPaw />
-              <Text fontWeight={500}>100</Text>
+            <Flex justify={"center"} align={"center"} gap={1} cursor="pointer">
+              <IoPaw color={isLiked ? "pink" : "white"} />
+              <Text fontWeight={500}>50</Text>
             </Flex>
             <Flex justify={"center"} align={"center"} gap={1}>
               <FaComment />
@@ -116,11 +156,14 @@ const ProfilePost = ({ img, caption, postId, onDelete }) => {
                       LeiBaley
                     </Text>
                   </Flex>
-                  <Box onClick={handleDelete} cursor="pointer">
-                    <MdDelete
-                      size={24}
-                      color={"#FFFFFFCC"}
-                    />
+                  <Box
+                    onClick={handleDelete}
+                    cursor="pointer"
+                    color="#FFFFFFCC" // default color
+                    _hover={{ color: "red.500" }}
+                    transition="color 0.2s"
+                  >
+                    <MdDelete size={24} />
                   </Box>
                 </Flex>
 
@@ -136,31 +179,28 @@ const ProfilePost = ({ img, caption, postId, onDelete }) => {
                   maxH={{ md: "300px", lg: "500px" }}
                   overflowY={"auto"}
                 >
-                  <Comment
-                    createdAt={"1h ago"}
-                    username={"LukiePookie"}
-                    profpic={"/images/dogimg4.jpeg"}
-                    text="lol that's so cute!"
-                  />
-
-                  <Comment
-                    createdAt={"11hr ago"}
-                    username={"Svenniee_"}
-                    profpic={"/images/dogimg5.jpg"}
-                    text="adorablee"
-                  />
-
-                  <Comment
-                    createdAt={"1d ago"}
-                    username={"Luckyy7"}
-                    profpic={"/images/dogimg6.jpeg"}
-                    text="let me in thereee ahhhh!!!!"
-                  />
+                  {comments.map((comment) => (
+                    <Comment
+                      key={comment._id}
+                      createdAt={new Date(comment.createdAt).toLocaleString()}
+                      username={comment.userId.username}
+                      profpic={
+                        comment.userId.profilePic || "/images/default.jpg"
+                      }
+                      text={comment.text}
+                    />
+                  ))}
                 </VStack>
 
                 <Divider my={4} backgroundColor={"#000000CC"} />
 
-                <PostFooter isProfilePage={true} />
+                <PostFooter
+                  isProfilePage={true}
+                  newComment={newComment}
+                  setNewComment={setNewComment}
+                  handleCommentSubmit={handleCommentSubmit}
+                  loadingComment={loadingComment}
+                />
               </Flex>
             </Flex>
           </ModalBody>
