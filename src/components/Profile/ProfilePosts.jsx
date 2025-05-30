@@ -6,8 +6,6 @@ import ProfilePost from "./ProfilePost";
 const ProfilePosts = ({ user }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
-  // const [image, setImage] = useState(null);
-  // const [caption, setCaption] = useState("");
 
   useEffect(() => {
     if (!user?._id) return;
@@ -74,15 +72,32 @@ const ProfilePosts = ({ user }) => {
                 </Skeleton>
               </GridItem>
             ))
-          : posts.map((post) => (
-              <ProfilePost
-                key={post._id}
-                postId={post._id}
-                img={post.imageUrl}
-                caption={post.caption}
-                onDelete={handleDeletePost}
-              />
-            ))}
+          : posts.map((post) => {
+              const userId = post.userId;
+
+              return (
+                <ProfilePost
+                  key={post._id}
+                  postId={post._id}
+                  img={post.imageUrl}
+                  caption={post.caption}
+                  postUser={
+                    userId && typeof userId === "object"
+                      ? {
+                          _id: userId._id,
+                          username: userId.username,
+                          profilePic: userId.profilePic,
+                        }
+                      : {
+                          _id: user._id,
+                          username: user.username,
+                          profilePic: user.profilePic,
+                        }
+                  }
+                  onDelete={handleDeletePost}
+                />
+              );
+            })}
       </Grid>
     </>
   );

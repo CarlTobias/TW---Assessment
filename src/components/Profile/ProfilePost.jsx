@@ -2,34 +2,25 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import {
-  Avatar,
-  Box,
-  Divider,
   Flex,
   GridItem,
   Image,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
   Text,
   useDisclosure,
-  VStack,
 } from "@chakra-ui/react";
-import Comment from "../Comment/Comment";
-import PostFooter from "../HomeFeed/PostFooter";
+import PostModal from "../PostModal/PostModal";
+import authStore from "../../stores/authStore";
 
 import { IoPaw } from "react-icons/io5";
 import { FaComment } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
 
-const ProfilePost = ({ img, caption, postId, onDelete }) => {
+const ProfilePost = ({ img, caption, postId, onDelete, postUser }) => {
+  const user = authStore((state) => state.user);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLiked, setIsLiked] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [loadingComment, setLoadingComment] = useState(false);
   const [comments, setComments] = useState([]);
-
 
   useEffect(() => {
     if (isOpen) {
@@ -38,7 +29,6 @@ const ProfilePost = ({ img, caption, postId, onDelete }) => {
         .get(`http://localhost:3000/api/comments/${postId}`)
         .then((res) => setComments(res.data))
         .catch((err) => console.error("Failed to fetch comments:", err));
-
     }
   }, [isOpen, postId]);
 
@@ -46,15 +36,15 @@ const ProfilePost = ({ img, caption, postId, onDelete }) => {
     if (!newComment.trim()) return;
     try {
       setLoadingComment(true);
-      const res = await axios.post(
-        `http://localhost:3000/api/comments/${postId}`,
-        {
-          userId: "currentLoggedInUserId", // Replace with actual user ID
-          text: newComment,
-        }
-      );
+      await axios.post(`http://localhost:3000/api/comments/${postId}`, {
+        userId: user._id,
+        text: newComment,
+      });
 
-      setComments((prev) => [...prev, res.data]);
+      const res = await axios.get(
+        `http://localhost:3000/api/comments/${postId}`
+      );
+      setComments(res.data);
       setNewComment("");
     } catch (err) {
       console.error("Failed to post comment:", err);
@@ -72,9 +62,6 @@ const ProfilePost = ({ img, caption, postId, onDelete }) => {
       console.error("Failed to delete post:", err);
     }
   };
-
-
-  
 
   return (
     <>
@@ -114,98 +101,21 @@ const ProfilePost = ({ img, caption, postId, onDelete }) => {
         <Image src={img} alt="post" w={"100%"} h={"100%"} objectFit={"cover"} />
       </GridItem>
 
-      <Modal
-        isCentered={true}
-        size={{ base: "3xl", md: "5xl" }}
+      <PostModal
         isOpen={isOpen}
         onClose={onClose}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalBody p={0} backgroundColor={"#3C3835"} borderRadius={5}>
-            <Flex
-              w={{ base: "90%", sm: "70%", md: "100%" }}
-              gap={4}
-              mx={"auto"}
-            >
-              <Box flex={1.5} borderLeftRadius={4} overflow={"hidden"}>
-                <Image
-                  src={img}
-                  alt="post"
-                  w={"100%"}
-                  maxH={"95vh"}
-                  objectFit={"cover"}
-                />
-              </Box>
-
-              <Flex
-                flex={1}
-                flexDirection={"column"}
-                pt={4}
-                px={5}
-                display={{ base: "none", md: "flex" }}
-              >
-                <Flex justify={"space-between"} align={"center"}>
-                  <Flex align={"center"} gap={2} color={"#FFFFFFCC"}>
-                    <Avatar
-                      src={"/images/dogimg3.jpeg"}
-                      size={"sm"}
-                      name={"LeiBaley"}
-                    />
-                    <Text fontWeight={"600"} fontSize={16}>
-                      LeiBaley
-                    </Text>
-                  </Flex>
-                  <Box
-                    onClick={handleDelete}
-                    cursor="pointer"
-                    color="#FFFFFFCC" // default color
-                    _hover={{ color: "red.500" }}
-                    transition="color 0.2s"
-                  >
-                    <MdDelete size={24} />
-                  </Box>
-                </Flex>
-
-                <Text color="#FFFFFFCC" fontSize={14} my={4}>
-                  {caption}
-                </Text>
-
-                <Divider my={4} backgroundColor={"#FFFFFFCC"} />
-
-                <VStack
-                  align={"left"}
-                  w={"100%"}
-                  maxH={{ md: "300px", lg: "500px" }}
-                  overflowY={"auto"}
-                >
-                  {comments.map((comment) => (
-                    <Comment
-                      key={comment._id}
-                      createdAt={new Date(comment.createdAt).toLocaleString()}
-                      username={comment.userId.username}
-                      profpic={
-                        comment.userId.profilePic || "/images/default.jpg"
-                      }
-                      text={comment.text}
-                    />
-                  ))}
-                </VStack>
-
-                <Divider my={4} backgroundColor={"#000000CC"} />
-
-                <PostFooter
-                  isProfilePage={true}
-                  newComment={newComment}
-                  setNewComment={setNewComment}
-                  handleCommentSubmit={handleCommentSubmit}
-                  loadingComment={loadingComment}
-                />
-              </Flex>
-            </Flex>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+        img={img}
+        caption={caption}
+        postId={postId}
+        postUser={postUser}
+        user={user}
+        handleDelete={handleDelete}
+        comments={comments}
+        newComment={newComment}
+        setNewComment={setNewComment}
+        handleCommentSubmit={handleCommentSubmit}
+        loadingComment={loadingComment}
+      />
     </>
   );
 };

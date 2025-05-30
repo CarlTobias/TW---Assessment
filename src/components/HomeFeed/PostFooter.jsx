@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
-  Button,
   Flex,
-  Input,
-  InputGroup,
-  InputRightElement,
   Text,
 } from "@chakra-ui/react";
 
@@ -16,10 +12,7 @@ const PostFooter = ({
   username,
   caption = "",
   isProfilePage,
-  newComment,
-  setNewComment,
-  handleCommentSubmit,
-  loadingComment,
+  onCommentClick,
 }) => {
   const [like, setLike] = useState(false);
   const [likes, setLikes] = useState(0);
@@ -53,7 +46,7 @@ const PostFooter = ({
             {likes === 1 ? "1 like" : `${likes} likes`}
           </Text>
         ) : (
-          <Box cursor="pointer" fontSize={25}>
+          <Box cursor="pointer" fontSize={25} onClick={onCommentClick}>
             <FaRegComment color="#F2D47E" />
           </Box>
         )}
@@ -67,7 +60,7 @@ const PostFooter = ({
 
       {!isProfilePage && (
         <>
-          <Flex px={5} pt={2} pb={0} fontWeight={600} color="#FFF">
+          <Flex px={5} pt={2} pb={5} fontWeight={600} color="#FFF">
             <Text>
               {username}{" "}
               <Text as="span" fontWeight={300}>
@@ -87,50 +80,8 @@ const PostFooter = ({
               )}
             </Text>
           </Flex>
-
-          <Text fontSize="sm" px={5} py={2} fontWeight={400} color="#FFF7EF99">
-            View all comments
-          </Text>
         </>
       )}
-
-      <Flex
-        justify="space-between"
-        align="center"
-        gap={2}
-        w="100%"
-        pb={5}
-        px={isProfilePage ? 0 : 5}
-      >
-        <InputGroup>
-          <Input
-            variant="flushed"
-            fontSize={14}
-            color={"#FFF"}
-            placeholder="Bark something..."
-            _placeholder={{ color: "#FFFFFF99" }}
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleCommentSubmit();
-            }}
-          />
-          <InputRightElement>
-            <Button
-              background="transparent"
-              fontWeight={600}
-              fontSize={14}
-              color="#FFF"
-              cursor="pointer"
-              _hover={{ color: "#E6883E" }}
-              isLoading={loadingComment}
-              onClick={handleCommentSubmit}
-            >
-              Post
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </Flex>
     </Box>
   );
 };

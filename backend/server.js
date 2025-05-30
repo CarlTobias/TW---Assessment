@@ -93,7 +93,7 @@ app.post("/api/login", async (req, res) => {
 });
 
 // Upload
-app.use(uploadRoutes);
+app.use("/api/upload", uploadRoutes);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 

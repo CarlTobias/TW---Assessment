@@ -14,6 +14,11 @@ const authStore = create((set) => ({
     set({ user: null });
   },
 
+  setUser: (user) => {
+    localStorage.setItem("woofles-user", JSON.stringify(user));
+    set({ user });
+  },
+
   fetchUser: async (id) => {
     try {
       const res = await axios.get(`http://localhost:3000/api/user/${id}`);

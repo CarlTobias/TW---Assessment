@@ -31,4 +31,20 @@ router.post("/api/upload", upload.single("image"), async (req, res) => {
   }
 });
 
+router.post("/profile-pic", upload.single("image"), async (req, res) => {
+  try {
+    // Upload image to Cloudinary
+    const cloudinaryResult = await cloudinary.uploader.upload(req.file.path);
+
+    // Delete local file
+    fs.unlinkSync(req.file.path);
+
+    // Return only the image URL (no post creation)
+    res.status(201).json({ imageUrl: cloudinaryResult.secure_url });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to upload profile picture" });
+  }
+});
+
 export default router;

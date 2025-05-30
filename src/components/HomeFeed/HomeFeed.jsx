@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import { Container, Flex, Spinner, Text } from "@chakra-ui/react";
-import FeedPost from "./FeedPost";
 import axios from "axios";
 
+import { Container, Flex, Spinner, Text } from "@chakra-ui/react";
+import FeedPost from "./FeedPost";
+import authStore from "../../stores/authStore";
+
 const HomeFeed = () => {
+  const user = authStore((state) => state.user);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -47,6 +50,9 @@ const HomeFeed = () => {
               username={post.user?.username}
               avatar={post.user?.profilePic}
               caption={post.caption}
+              postId={post._id}
+              postUser={post.user}
+              user={user}
             />
           ))
         )}

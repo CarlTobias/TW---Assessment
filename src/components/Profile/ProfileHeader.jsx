@@ -6,10 +6,12 @@ import {
   Button,
   Flex,
   Text,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
 
+import EditProfile from "./EditProfile";
 import authStore from "../../stores/authStore";
 
 const ProfileHeader = ({ user, refreshProfile }) => {
@@ -19,12 +21,16 @@ const ProfileHeader = ({ user, refreshProfile }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   useEffect(() => {
     if (!isOwnProfile && user?.followers && me?._id) {
-      setIsFollowing(user.followers.includes(me._id));
+      const following = user.followers.some(
+        (follower) => follower._id?.toString() === me._id
+      );
+      setIsFollowing(following);
     }
-  }, [user, me, isOwnProfile]);
-  
+  }, [user.followers, me._id, isOwnProfile]);
 
   const handleFollow = async () => {
     setButtonLoading(true);
@@ -32,9 +38,11 @@ const ProfileHeader = ({ user, refreshProfile }) => {
       await axios.put(`http://localhost:3000/api/user/follow/${user._id}`, {
         currentUserId: me._id,
       });
-      await refreshProfile(); // will cause isFollowing to update in useEffect
+
+      user.followers.push({ _id: me._id });
+      setIsFollowing(true);
     } catch (err) {
-      console.error(err);
+      console.error("Follow failed:", err?.response?.data || err.message);
     } finally {
       setButtonLoading(false);
     }
@@ -46,14 +54,17 @@ const ProfileHeader = ({ user, refreshProfile }) => {
       await axios.put(`http://localhost:3000/api/user/unfollow/${user._id}`, {
         currentUserId: me._id,
       });
-      await refreshProfile(); // will cause isFollowing to update in useEffect
+
+      user.followers = user.followers.filter(
+        (follower) => follower._id?.toString() !== me._id
+      );
+      setIsFollowing(false);
     } catch (err) {
-      console.error(err);
+      console.error("Unfollow failed:", err?.response?.data || err.message);
     } finally {
       setButtonLoading(false);
     }
   };
-  
 
   return (
     <>
@@ -76,7 +87,13 @@ const ProfileHeader = ({ user, refreshProfile }) => {
           />
         </AvatarGroup>
 
-        <VStack gap={2} justify={"space-evenly"} align={"start"} mx={"auto"}>
+        <VStack
+          gap={2}
+          justify={"space-between"}
+          align={"start"}
+          mx={"auto"}
+          w="100%"
+        >
           <Flex
             direction={{ base: "column", sm: "row" }}
             w={"100%"}
@@ -97,14 +114,15 @@ const ProfileHeader = ({ user, refreshProfile }) => {
                   h={"100%"}
                   px={3}
                   py={1}
+                  border={"solid 2px black"}
                   borderRadius={5}
-                  backgroundColor={"#3C383580"}
                   fontSize={{ base: 16, sm: 18, md: 20 }}
                   fontWeight={400}
                   _hover={{
                     backgroundColor: "#6EA4EC",
                     color: "#000",
                   }}
+                  onClick={onOpen}
                 >
                   Edit Profile
                 </Button>
@@ -114,11 +132,12 @@ const ProfileHeader = ({ user, refreshProfile }) => {
                   px={3}
                   py={1}
                   borderRadius={5}
-                  backgroundColor={isFollowing ? "#eee" : "#3C383580"}
+                  backgroundColor={isFollowing ? "#3C3835" : "#3C3835"}
                   fontSize={{ base: 16, sm: 18, md: 20 }}
                   fontWeight={400}
+                  color={"#FFF"}
                   _hover={{
-                    backgroundColor: isFollowing ? "#f44336" : "#6EA4EC",
+                    backgroundColor: isFollowing ? "#f44336" : "#E49F43",
                     color: "#000",
                   }}
                   onClick={isFollowing ? handleUnfollow : handleFollow}
@@ -158,12 +177,22 @@ const ProfileHeader = ({ user, refreshProfile }) => {
             </Text>
           </Flex>
 
-          <Text fontSize={16} textAlign={{ base: "center", sm: "justify" }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-            convallis.
+          <Text
+            minW={"100%"}
+            fontSize={16}
+            textAlign={{ base: "center", sm: "justify" }}
+          >
+            {user.bio || "No bio."}
           </Text>
         </VStack>
       </Flex>
+
+      <EditProfile
+        isOpen={isOpen}
+        onClose={onClose}
+        user={user}
+        onProfileUpdated={refreshProfile}
+      />
     </>
   );
 };

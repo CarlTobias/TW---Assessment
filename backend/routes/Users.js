@@ -4,6 +4,34 @@ import getUserProfile from "../controllers/userController.js";
 
 const router = express.Router();
 
+// Update user profile
+router.put("/update/:id", async (req, res) => {
+  const { id } = req.params;
+  const { username, bio, profilePic } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        username,
+        bio,
+        profilePic,
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ message: "Profile updated successfully", user: updatedUser });
+  } catch (error) {
+    console.error("Profile update error:", error);
+    res.status(500).json({ error: "Failed to update profile" });
+  }
+});
+
+
 router.get("/suggested/:id", async (req, res) => {
   try {
     const currentUserId = req.params.id;
@@ -87,5 +115,6 @@ router.put("/unfollow/:id", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
 
 export default router;
