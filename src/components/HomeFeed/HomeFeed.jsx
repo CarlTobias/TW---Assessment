@@ -49,6 +49,7 @@ const HomeFeed = () => {
               img={post.imageUrl}
               username={post.user?.username}
               avatar={post.user?.profilePic}
+              createdAt={post.createdAt}
               caption={post.caption}
               postId={post._id}
               postUser={post.user}

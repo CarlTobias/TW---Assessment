@@ -6,7 +6,7 @@ import Post from "../models/Post.js";
 
 const router = express.Router();
 
-router.post("/api/upload", upload.single("image"), async (req, res) => {
+router.post("/", upload.single("image"), async (req, res) => {
   try {
     const { caption, userId } = req.body;
 

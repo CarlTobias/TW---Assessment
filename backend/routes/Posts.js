@@ -52,29 +52,3 @@ router.delete("/:id", async (req, res) => {
 
 
 export default router;
-
-
-// Toggle like (not working yet)
-// router.put("/:id/like", async (req, res) => {
-//   try {
-//     const post = await Post.findById(req.params.id);
-//     const userId = req.body.userId;
-
-//     if (!post) return res.status(404).json({ message: "Post not found" });
-
-//     if (post.likes.includes(userId)) {
-//       // Unlike
-//       post.likes = post.likes.filter((id) => id.toString() !== userId);
-//     } else {
-//       // Like
-//       post.likes.push(userId);
-//     }
-
-//     await post.save();
-
-//     res.status(200).json({ likes: post.likes });
-//   } catch (err) {
-//     console.error("Error liking post:", err);
-//     res.status(500).json({ message: "Error liking post" });
-//   }
-// });

@@ -36,7 +36,7 @@ const ProfileTabs = ({ user }) => {
           </Text>
         </Flex>
 
-        <Flex align={"center"} gap={2} pt={1} px={2} cursor={"pointer"}>
+        {/* <Flex align={"center"} gap={2} pt={1} px={2} cursor={"pointer"}>
           <Box>
             <IoPaw size={"32px"} />
           </Box>
@@ -47,7 +47,7 @@ const ProfileTabs = ({ user }) => {
           >
             Liked
           </Text>
-        </Flex>
+        </Flex> */}
       </Flex>
     </>
   );

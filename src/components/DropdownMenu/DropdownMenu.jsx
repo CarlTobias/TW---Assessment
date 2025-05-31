@@ -1,7 +1,6 @@
-import React from "react";
-
 import {
   IconButton,
+  Link,
   Menu,
   MenuButton,
   MenuList,
@@ -16,7 +15,12 @@ import { SiDatadog } from "react-icons/si";
 import { IoSettingsOutline } from "react-icons/io5";
 
 const DropdownMenu = () => {
-  const user = authStore((store) => store.user)
+  const user = authStore((store) => store.user);
+  const logout = authStore((store) => store.logout);
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <>
@@ -48,21 +52,29 @@ const DropdownMenu = () => {
           </MenuItem>
 
           <MenuItem
-            className={"menuText"}
+            flexDirection={"row"}
             bg={"none"}
             gap={4}
             variant="ghost"
-            color="#FFF7EF"
-            _hover={{ color: "#F88DC3", bg: "transparent" }}
-            _active={{ color: "#F88DC3", bg: "transparent" }}
             onClick={() => console.log("Friends")}
           >
-            <SiDatadog color={"#FFF7EF"} size={"35px"} /> {/* change icon into something else */}
-            Friends
+            <SiDatadog color={"#FFF7EF"} size={"35px"} />{" "}
+            {/* change icon into something else */}
+            <Link
+              as={RouterLink}
+              to="/wooflesAuth"
+              fontWeight="500"
+              color="#FFF7EF"
+              _hover={{ color: "#F88DC3", bg: "transparent" }}
+              style={{ textDecoration: "none" }}
+              cursor="pointer"
+              onClick={handleLogout}
+            >
+              Log Out
+            </Link>
           </MenuItem>
 
-          <MenuItem
-            className={"menuText"}
+          {/* <MenuItem
             bg={"none"}
             gap={4}
             variant="ghost"
@@ -73,7 +85,7 @@ const DropdownMenu = () => {
           >
             <IoSettingsOutline color={"#FFF7EF"} size={"35px"} />
             Settings
-          </MenuItem>
+          </MenuItem> */}
         </MenuList>
       </Menu>
     </>

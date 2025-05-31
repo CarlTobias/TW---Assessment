@@ -15,12 +15,14 @@ const FeedPost = ({
   img,
   username,
   avatar,
+  createdAt,
   caption,
   postId,
   postUser,
   user,
   handleDelete,
 }) => {
+  const [likes, setLikes] = useState(postUser?.likes || []);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [newComment, setNewComment] = useState("");
   const [loadingComment, setLoadingComment] = useState(false);
@@ -63,17 +65,25 @@ const FeedPost = ({
       align="stretch"
       spacing={0}
     >
-      <PostHeader avatar={avatar} username={username} />
+      <PostHeader
+        avatar={avatar}
+        username={username}
+        createdAt={createdAt}
+      />
       <Box>
         <AspectRatio ratio={1} width="100%">
           <Image src={img} alt={username} objectFit="cover" display="block" />
         </AspectRatio>
       </Box>
-      
+
       <PostFooter
+        postId={postId}
+        userId={user?._id}
+        initialLikes={likes}
         username={username}
         caption={caption}
         onCommentClick={onOpen}
+        onLikeToggle={(updatedLikes) => setLikes(updatedLikes)}
       />
 
       <PostModal

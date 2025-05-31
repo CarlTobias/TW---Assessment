@@ -1,6 +1,18 @@
 import { Avatar, Flex, Text, VStack } from "@chakra-ui/react";
 
-const PostHeader = ({ avatar, username }) => {
+const PostHeader = ({ avatar, username, createdAt }) => {
+
+  const dateObj = new Date(createdAt);
+  const time = dateObj.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const date = dateObj.toLocaleDateString([], {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
   return (
     <>
       <Flex justify={"space-between"} align={"center"} w={"100%"} p={4}>
@@ -12,9 +24,9 @@ const PostHeader = ({ avatar, username }) => {
                 {username}
               </Text>
               <Flex gap={2} fontSize={10} fontWeight={400} color={"#FFF"}>
-                <Text>Just Now</Text>
+                <Text>{date}</Text>
                 <Text>|</Text>
-                <Text>Location</Text>
+                <Text>{time}</Text>
               </Flex>
             </Flex>
           </VStack>

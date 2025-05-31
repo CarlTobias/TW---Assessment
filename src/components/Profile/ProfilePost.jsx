@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import {
-  Flex,
-  GridItem,
-  Image,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Flex, GridItem, Image, Text, useDisclosure } from "@chakra-ui/react";
 import PostModal from "../PostModal/PostModal";
 import authStore from "../../stores/authStore";
 
@@ -21,13 +15,24 @@ const ProfilePost = ({ img, caption, postId, onDelete, postUser }) => {
   const [newComment, setNewComment] = useState("");
   const [loadingComment, setLoadingComment] = useState(false);
   const [comments, setComments] = useState([]);
+  const [commentCount, setCommentCount] = useState(0);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3000/api/comments/${postId}`)
+      .then((res) => {
+        setCommentCount(res.data.length);
+      })
+      .catch((err) => console.error("Failed to fetch comment count:", err));
+  }, [postId]);
 
   useEffect(() => {
     if (isOpen) {
-      console.log("Fetching comments for postId:", postId);
       axios
         .get(`http://localhost:3000/api/comments/${postId}`)
-        .then((res) => setComments(res.data))
+        .then((res) => {
+          setComments(res.data);
+        })
         .catch((err) => console.error("Failed to fetch comments:", err));
     }
   }, [isOpen, postId]);
@@ -45,6 +50,7 @@ const ProfilePost = ({ img, caption, postId, onDelete, postUser }) => {
         `http://localhost:3000/api/comments/${postId}`
       );
       setComments(res.data);
+      setCommentCount(res.data.length);
       setNewComment("");
     } catch (err) {
       console.error("Failed to post comment:", err);
@@ -87,13 +93,9 @@ const ProfilePost = ({ img, caption, postId, onDelete, postUser }) => {
           transition={"all 0.3s"}
         >
           <Flex justify={"center"} align={"center"} gap={25} color={"#FFFFFF"}>
-            <Flex justify={"center"} align={"center"} gap={1} cursor="pointer">
-              <IoPaw color={isLiked ? "pink" : "white"} />
-              <Text fontWeight={500}>50</Text>
-            </Flex>
             <Flex justify={"center"} align={"center"} gap={1}>
               <FaComment />
-              <Text fontWeight={500}>50</Text>
+              <Text fontWeight={500}>{commentCount}</Text>
             </Flex>
           </Flex>
         </Flex>
