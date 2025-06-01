@@ -30,7 +30,7 @@ app.use(express.json());
 // Running both frontend and backend simultaneously
 app.use(
   cors({
-    origin: "https://woofles.onrender.com:5173",
+    origin: "https://woofles.onrender.com",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
