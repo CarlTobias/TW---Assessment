@@ -46,8 +46,6 @@ router.get("/suggested/:id", async (req, res) => {
   }
 });
 
-router.get("/:id", getUserProfile);
-
 // Follow user
 router.put("/follow/:id", async (req, res) => {
   try {
@@ -116,5 +114,6 @@ router.put("/unfollow/:id", async (req, res) => {
   }
 });
 
+router.get("/:id", getUserProfile);
 
 export default router;

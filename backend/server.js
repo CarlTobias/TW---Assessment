@@ -6,11 +6,6 @@ import bcrypt from "bcrypt";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const distPath = path.join(__dirname, "dist");
-
 import User from "./models/User.js";
 import postRoutes from "./routes/Posts.js";
 import uploadRoutes from "./routes/Uploads.js";
@@ -21,7 +16,9 @@ dotenv.config();
 const app = express();
 
 
-app.use(express.static(distPath));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, "dist")));
 
 
 // Middleware
@@ -30,7 +27,7 @@ app.use(express.json());
 // Running both frontend and backend simultaneously
 app.use(
   cors({
-    origin: "https://woofles.onrender.com",
+    origin: ["http://localhost:5173", "https://woofles.onrender.com"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -109,10 +106,6 @@ app.use("/api/posts", postRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/comments", commentRoutes);
 
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(distPath, "index.html"));
-});
 
 app.listen(3000, () => {
   console.log("Server running on https://woofles.onrender.com:3000");

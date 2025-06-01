@@ -3,7 +3,6 @@ import { Navigate, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import PageLayout from "./Layouts/PageLayout/PageLayout";
 
-import LandingPage from "./pages/LandingPage/LandingPage";
 import AuthPage from "./pages/AuthPage/AuthPage";
 import HomePage from "./pages/HomePage/HomePage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
@@ -13,7 +12,6 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Navigate to="/wooflesAuth" replace />} />
-        <Route path="/wooflesLanding" element={<LandingPage />} />
         <Route path="/wooflesAuth" element={<AuthPage />} />
 
         <Route element={<PrivateRoute />}>
