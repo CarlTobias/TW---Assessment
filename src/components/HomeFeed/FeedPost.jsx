@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import {
   AspectRatio,
@@ -31,7 +31,7 @@ const FeedPost = ({
   useEffect(() => {
     if (isOpen) {
       axios
-        .get(`https://woofles.onrender.com:3000/api/comments/${postId}`)
+        .get(`https://woofles.onrender.com/api/comments/${postId}`)
         .then((res) => setComments(res.data))
         .catch((err) => console.error("Failed to fetch comments:", err));
     }
@@ -41,13 +41,13 @@ const FeedPost = ({
     if (!newComment.trim()) return;
     try {
       setLoadingComment(true);
-      await axios.post(`https://woofles.onrender.com:3000/api/comments/${postId}`, {
+      await axios.post(`https://woofles.onrender.com/api/comments/${postId}`, {
         userId: user._id,
         text: newComment,
       });
 
       const res = await axios.get(
-        `https://woofles.onrender.com:3000/api/comments/${postId}`
+        `https://woofles.onrender.com/api/comments/${postId}`
       );
       setComments(res.data);
       setNewComment("");

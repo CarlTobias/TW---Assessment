@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Container, Flex } from "@chakra-ui/react";
 import HomeFeed from "../../components/HomeFeed/HomeFeed";
 import SuggestedUsers from "../../components/SuggestedUsers/SuggestedUsers";

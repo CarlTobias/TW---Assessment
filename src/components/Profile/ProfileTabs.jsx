@@ -1,9 +1,6 @@
-import React from "react";
-
 import { Box, Flex, Text } from "@chakra-ui/react";
 
 import { SiDatadog } from "react-icons/si";
-import { IoPaw } from "react-icons/io5";
 
 const ProfileTabs = ({ user }) => {
   return (
@@ -35,19 +32,6 @@ const ProfileTabs = ({ user }) => {
             Posts
           </Text>
         </Flex>
-
-        {/* <Flex align={"center"} gap={2} pt={1} px={2} cursor={"pointer"}>
-          <Box>
-            <IoPaw size={"32px"} />
-          </Box>
-          <Text
-            display={{ base: "none", md: "block" }}
-            _hover={{ color: "#6EA4EC" }}
-            _active={{ color: "#6EA4EC" }}
-          >
-            Liked
-          </Text>
-        </Flex> */}
       </Flex>
     </>
   );

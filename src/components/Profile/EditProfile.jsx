@@ -5,7 +5,6 @@
     ModalHeader,
     ModalFooter,
     ModalBody,
-    ModalCloseButton,
     Button,
     FormControl,
     FormLabel,
@@ -44,7 +43,7 @@
             formData.append("image", selectedFile);
 
             const uploadRes = await axios.post(
-            "https://woofles.onrender.com:3000/api/upload/profile-pic",
+            "https://woofles.onrender.com/api/upload/profile-pic",
             formData,
             {
                 headers: { "Content-Type": "multipart/form-data" },
@@ -69,7 +68,7 @@
         }
 
         await axios.put(
-            `https://woofles.onrender.com:3000/api/user/update/${user._id}`,
+            `https://woofles.onrender.com/api/user/update/${user._id}`,
             updates
         );
 

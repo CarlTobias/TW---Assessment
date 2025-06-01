@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Box, Container, Flex, Image, VStack } from "@chakra-ui/react";
 import AuthForm from "../../components/AuthForm/AuthForm";
 

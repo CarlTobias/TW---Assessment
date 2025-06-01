@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import {
   Button,
@@ -44,7 +44,7 @@ const UploadForm = ({ isOpen, onClose }) => {
       formData.append("userId", user._id);
 
       const res = await axios.post(
-        "https://woofles.onrender.com:3000/api/upload",
+        "https://woofles.onrender.com/api/upload",
         formData,
         {
           headers: {

@@ -35,7 +35,7 @@ const ProfileHeader = ({ user, refreshProfile }) => {
   const handleFollow = async () => {
     setButtonLoading(true);
     try {
-      await axios.put(`https://woofles.onrender.com:3000/api/user/follow/${user._id}`, {
+      await axios.put(`https://woofles.onrender.com/api/user/follow/${user._id}`, {
         currentUserId: me._id,
       });
 
@@ -51,7 +51,7 @@ const ProfileHeader = ({ user, refreshProfile }) => {
   const handleUnfollow = async () => {
     setButtonLoading(true);
     try {
-      await axios.put(`https://woofles.onrender.com:3000/api/user/unfollow/${user._id}`, {
+      await axios.put(`https://woofles.onrender.com/api/user/unfollow/${user._id}`, {
         currentUserId: me._id,
       });
 

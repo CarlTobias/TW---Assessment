@@ -1,5 +1,3 @@
-import React from "react";
-
 import DropdownMenu from "../DropdownMenu/DropdownMenu";
 
 import { Box, Flex, Image, Link, Tooltip } from "@chakra-ui/react";

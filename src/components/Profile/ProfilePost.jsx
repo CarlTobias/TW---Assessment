@@ -5,7 +5,6 @@ import { Flex, GridItem, Image, Text, useDisclosure } from "@chakra-ui/react";
 import PostModal from "../PostModal/PostModal";
 import authStore from "../../stores/authStore";
 
-import { IoPaw } from "react-icons/io5";
 import { FaComment } from "react-icons/fa";
 
 const ProfilePost = ({ img, caption, postId, onDelete, postUser }) => {
@@ -19,7 +18,7 @@ const ProfilePost = ({ img, caption, postId, onDelete, postUser }) => {
 
   useEffect(() => {
     axios
-      .get(`https://woofles.onrender.com:3000/api/comments/${postId}`)
+      .get(`https://woofles.onrender.com/api/comments/${postId}`)
       .then((res) => {
         setCommentCount(res.data.length);
       })
@@ -29,7 +28,7 @@ const ProfilePost = ({ img, caption, postId, onDelete, postUser }) => {
   useEffect(() => {
     if (isOpen) {
       axios
-        .get(`https://woofles.onrender.com:3000/api/comments/${postId}`)
+        .get(`https://woofles.onrender.com/api/comments/${postId}`)
         .then((res) => {
           setComments(res.data);
         })
@@ -41,13 +40,13 @@ const ProfilePost = ({ img, caption, postId, onDelete, postUser }) => {
     if (!newComment.trim()) return;
     try {
       setLoadingComment(true);
-      await axios.post(`https://woofles.onrender.com:3000/api/comments/${postId}`, {
+      await axios.post(`https://woofles.onrender.com/api/comments/${postId}`, {
         userId: user._id,
         text: newComment,
       });
 
       const res = await axios.get(
-        `https://woofles.onrender.com:3000/api/comments/${postId}`
+        `https://woofles.onrender.com/api/comments/${postId}`
       );
       setComments(res.data);
       setCommentCount(res.data.length);
@@ -61,7 +60,7 @@ const ProfilePost = ({ img, caption, postId, onDelete, postUser }) => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`https://woofles.onrender.com:3000/api/posts/${postId}`);
+      await axios.delete(`https://woofles.onrender.com/api/posts/${postId}`);
       onClose();
       if (onDelete) onDelete(postId);
     } catch (err) {

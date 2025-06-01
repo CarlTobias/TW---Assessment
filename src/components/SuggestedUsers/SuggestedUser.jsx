@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import { Avatar, Box, Button, Flex, Link, VStack } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const SuggestedUser = ({ avatar, followers, user, userID, me }) => {

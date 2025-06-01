@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import { Box, Flex, Text, VStack } from "@chakra-ui/react";
 
@@ -14,7 +14,7 @@ const SuggestedUsers = () => {
     const fetchSuggestedUsers = async () => {
       try {
         const res = await fetch(
-          `https://woofles.onrender.com:3000/api/user/suggested/${currentUser._id}`
+          `https://woofles.onrender.com/api/user/suggested/${currentUser._id}`
         );
         const data = await res.json();
         setSuggested(data);
