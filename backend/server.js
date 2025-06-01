@@ -107,6 +107,11 @@ app.use("/api/user", userRoutes);
 app.use("/api/comments", commentRoutes);
 
 
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
+
+
 app.listen(3000, () => {
   console.log("Server running on https://woofles.onrender.com:3000");
 });
