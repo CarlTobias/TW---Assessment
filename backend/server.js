@@ -5,6 +5,12 @@ import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import path from "path";
 import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const distPath = path.join(__dirname, "dist");
+
 import User from "./models/User.js";
 import postRoutes from "./routes/Posts.js";
 import uploadRoutes from "./routes/Uploads.js";
@@ -15,8 +21,8 @@ dotenv.config();
 const app = express();
 
 
-const distPath = path.join(__dirname, "dist");
 app.use(express.static(distPath));
+
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(distPath, "index.html"));
@@ -102,8 +108,6 @@ app.post("/api/login", async (req, res) => {
 
 // Upload
 app.use("/api/upload", uploadRoutes);
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Serve uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -112,10 +116,7 @@ app.use("/api/posts", postRoutes);
 
 app.use("/api/user", userRoutes);
 
-
-
 app.use("/api/comments", commentRoutes);
-
 
 app.listen(3000, () => {
   console.log("Server running on https://woofles.onrender.com:3000");
