@@ -24,10 +24,6 @@ const app = express();
 app.use(express.static(distPath));
 
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(distPath, "index.html"));
-});
-
 // Middleware
 app.use(express.json());
 
@@ -106,17 +102,17 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-// Upload
+// Routes
 app.use("/api/upload", uploadRoutes);
-
-// Serve uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 app.use("/api/posts", postRoutes);
-
 app.use("/api/user", userRoutes);
-
 app.use("/api/comments", commentRoutes);
+
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(distPath, "index.html"));
+});
 
 app.listen(3000, () => {
   console.log("Server running on https://woofles.onrender.com:3000");
