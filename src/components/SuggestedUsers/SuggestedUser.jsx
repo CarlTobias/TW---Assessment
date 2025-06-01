@@ -35,7 +35,7 @@ const SuggestedUser = ({ avatar, followers, user, userID, me }) => {
         color={"#000"}
         onClick={handleVisit}
         _hover={{
-          color: "#000",
+          color: "#6EA4EC",
         }}
       >
         Visit

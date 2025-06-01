@@ -53,7 +53,7 @@ const AuthForm = () => {
 
     try {
       const url = isLogin ? "/api/login" : "/api/register";
-      const res = await fetch("http://localhost:3000" + url, {
+      const res = await fetch("https://woofles.onrender.com:3000" + url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

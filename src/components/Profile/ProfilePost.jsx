@@ -19,7 +19,7 @@ const ProfilePost = ({ img, caption, postId, onDelete, postUser }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/comments/${postId}`)
+      .get(`https://woofles.onrender.com:3000/api/comments/${postId}`)
       .then((res) => {
         setCommentCount(res.data.length);
       })
@@ -29,7 +29,7 @@ const ProfilePost = ({ img, caption, postId, onDelete, postUser }) => {
   useEffect(() => {
     if (isOpen) {
       axios
-        .get(`http://localhost:3000/api/comments/${postId}`)
+        .get(`https://woofles.onrender.com:3000/api/comments/${postId}`)
         .then((res) => {
           setComments(res.data);
         })
@@ -41,13 +41,13 @@ const ProfilePost = ({ img, caption, postId, onDelete, postUser }) => {
     if (!newComment.trim()) return;
     try {
       setLoadingComment(true);
-      await axios.post(`http://localhost:3000/api/comments/${postId}`, {
+      await axios.post(`https://woofles.onrender.com:3000/api/comments/${postId}`, {
         userId: user._id,
         text: newComment,
       });
 
       const res = await axios.get(
-        `http://localhost:3000/api/comments/${postId}`
+        `https://woofles.onrender.com:3000/api/comments/${postId}`
       );
       setComments(res.data);
       setCommentCount(res.data.length);
@@ -61,7 +61,7 @@ const ProfilePost = ({ img, caption, postId, onDelete, postUser }) => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:3000/api/posts/${postId}`);
+      await axios.delete(`https://woofles.onrender.com:3000/api/posts/${postId}`);
       onClose();
       if (onDelete) onDelete(postId);
     } catch (err) {

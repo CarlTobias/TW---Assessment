@@ -14,13 +14,21 @@ import commentRoutes from "./routes/Comments.js";
 dotenv.config();
 const app = express();
 
+
+const distPath = path.join(__dirname, "dist");
+app.use(express.static(distPath));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(distPath, "index.html"));
+});
+
 // Middleware
 app.use(express.json());
 
 // Running both frontend and backend simultaneously
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://woofles.onrender.com:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -110,5 +118,5 @@ app.use("/api/comments", commentRoutes);
 
 
 app.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
+  console.log("Server running on https://woofles.onrender.com:3000");
 });

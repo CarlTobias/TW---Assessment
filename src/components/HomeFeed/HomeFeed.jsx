@@ -13,7 +13,9 @@ const HomeFeed = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/posts");
+        const res = await axios.get(
+          "https://woofles.onrender.com:3000/api/posts"
+        );
         console.log("Fetched posts from backend:", res.data);
         setPosts(res.data);
       } catch (err) {

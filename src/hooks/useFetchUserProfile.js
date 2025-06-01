@@ -13,7 +13,7 @@ const useFetchUserProfile = () => {
 
     try {
       const { data } = await axios.get(
-        `http://localhost:3000/api/user/${userId}`
+        `https://woofles.onrender.com:3000/api/user/${userId}`
       );
       setProfile(data);
     } catch (error) {

@@ -14,7 +14,7 @@ const SuggestedUsers = () => {
     const fetchSuggestedUsers = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/user/suggested/${currentUser._id}`
+          `https://woofles.onrender.com:3000/api/user/suggested/${currentUser._id}`
         );
         const data = await res.json();
         setSuggested(data);

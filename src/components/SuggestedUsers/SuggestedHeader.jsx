@@ -33,9 +33,10 @@ const SuggestedHeader = () => {
         to="/wooflesAuth"
         fontSize={14}
         fontWeight="500"
-        color="#757DAC"
+        color="#000"
         style={{ textDecoration: "none" }}
         cursor="pointer"
+        _hover={{ color: "#F88DC3" }}
         onClick={handleLogout}
       >
         Log Out

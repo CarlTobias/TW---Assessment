@@ -14,7 +14,7 @@ const ProfilePosts = ({ user }) => {
       try {
         const userId = user._id;
         const response = await fetch(
-          `http://localhost:3000/api/posts?userId=${userId}`
+          `https://woofles.onrender.com:3000/api/posts?userId=${userId}`
         );
         const data = await response.json();
         setPosts(Array.isArray(data) ? data : []);
@@ -39,7 +39,7 @@ const ProfilePosts = ({ user }) => {
     const newPost = { imageUrl: image, caption: caption, userId: user?._id };
 
     try {
-      const response = await fetch("http://localhost:3000/api/upload", {
+      const response = await fetch("https://woofles.onrender.com:3000/api/upload", {
         method: "POST",
         body: JSON.stringify(newPost),
         headers: { "Content-Type": "application/json" },

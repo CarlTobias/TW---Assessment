@@ -21,7 +21,9 @@ const authStore = create((set) => ({
 
   fetchUser: async (id) => {
     try {
-      const res = await axios.get(`http://localhost:3000/api/user/${id}`);
+      const res = await axios.get(
+        `https://woofles.onrender.com:3000/api/user/${id}`
+      );
       localStorage.setItem("woofles-user", JSON.stringify(res.data));
       set({ user: res.data });
     } catch (err) {

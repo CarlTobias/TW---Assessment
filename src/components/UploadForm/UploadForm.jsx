@@ -44,7 +44,7 @@ const UploadForm = ({ isOpen, onClose }) => {
       formData.append("userId", user._id);
 
       const res = await axios.post(
-        "http://localhost:3000/api/upload",
+        "https://woofles.onrender.com:3000/api/upload",
         formData,
         {
           headers: {

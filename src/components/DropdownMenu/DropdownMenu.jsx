@@ -11,8 +11,7 @@ import authStore from "../../stores/authStore";
 
 import { HiMenu } from "react-icons/hi";
 import { PiDog } from "react-icons/pi";
-import { SiDatadog } from "react-icons/si";
-import { IoSettingsOutline } from "react-icons/io5";
+import { GiJumpingDog } from "react-icons/gi";
 
 const DropdownMenu = () => {
   const user = authStore((store) => store.user);
@@ -44,7 +43,6 @@ const DropdownMenu = () => {
             fontWeight={500}
             color="#FFF7EF"
             _hover={{ color: "#F2D47E", bg: "transparent" }}
-            _active={{ color: "#F2D47E", bg: "transparent" }}
             onClick={() => console.log("Profile")}
           >
             <PiDog color={"#FFF7EF"} size={"35px"} />
@@ -58,8 +56,7 @@ const DropdownMenu = () => {
             variant="ghost"
             onClick={() => console.log("Friends")}
           >
-            <SiDatadog color={"#FFF7EF"} size={"35px"} />{" "}
-            {/* change icon into something else */}
+            <GiJumpingDog color={"#FFF7EF"} size={"35px"} />{" "}
             <Link
               as={RouterLink}
               to="/wooflesAuth"
