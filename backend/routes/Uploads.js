@@ -62,3 +62,5 @@ router.post("/profile-pic", upload.single("image"), async (req, res) => {
   }
 });
 
+
+export default router;
