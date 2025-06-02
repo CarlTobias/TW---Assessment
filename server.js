@@ -6,11 +6,11 @@ import bcrypt from "bcrypt";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import User from "./models/User.js";
-import postRoutes from "./routes/Posts.js";
-import uploadRoutes from "./routes/Uploads.js";
-import userRoutes from "./routes/Users.js";
-import commentRoutes from "./routes/Comments.js";
+import User from "./backend/models/User.js";
+import postRoutes from "./backend/routes/Posts.js";
+import uploadRoutes from "./backend/routes/Uploads.js";
+import userRoutes from "./backend/routes/Users.js";
+import commentRoutes from "./backend/routes/Comments.js";
 
 dotenv.config();
 const app = express();
@@ -107,11 +107,6 @@ app.use("/api/user", userRoutes);
 app.use("/api/comments", commentRoutes);
 
 
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
-});
-
-
 app.listen(3000, () => {
-  console.log("Server running on https://woofles.onrender.com:3000");
+  console.log("Server running on port 3000");
 });
