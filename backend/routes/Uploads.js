@@ -10,13 +10,26 @@ router.post("/", upload.single("image"), async (req, res) => {
   try {
     const { caption, userId } = req.body;
 
-    // Upload image to Cloudinary
-    const cloudinaryResult = await cloudinary.uploader.upload(req.file.path);
+    if (!caption || !userId) {
+      return res.status(400).json({ error: "Caption and userId are required" });
+    }
 
-    // Delete the local file to save storage
-    fs.unlinkSync(req.file.path);
+    if (!req.file) {
+      return res.status(400).json({ error: "No image file uploaded" });
+    }
 
-    // Create new post with the uploaded image URL
+    // Upload to Cloudinary
+    const cloudinaryResult = await cloudinary.uploader.upload(req.file.path, {
+      folder: "woofles/posts",
+    });
+
+    // Delete local file
+    try {
+      fs.unlinkSync(req.file.path);
+    } catch (unlinkErr) {
+      console.warn("Failed to delete file:", unlinkErr);
+    }
+
     const newPost = new Post({
       imageUrl: cloudinaryResult.secure_url,
       caption,
@@ -26,10 +39,11 @@ router.post("/", upload.single("image"), async (req, res) => {
     await newPost.save();
     res.status(201).json(newPost);
   } catch (err) {
-    console.error(err);
+    console.error("Upload error:", err.message);
     res.status(500).json({ error: "Something went wrong uploading the post" });
   }
 });
+
 
 router.post("/profile-pic", upload.single("image"), async (req, res) => {
   try {
