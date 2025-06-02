@@ -1,10 +1,23 @@
-import fs from "fs";
 import express from "express";
 import cloudinary from "../config/cloudinary.js";
 import upload from "../middleware/upload.js";
 import Post from "../models/Post.js";
 
 const router = express.Router();
+
+// Helper function to upload from buffer
+const streamUpload = (fileBuffer) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: "woofles/posts" },
+      (error, result) => {
+        if (result) resolve(result);
+        else reject(error);
+      }
+    );
+    stream.end(fileBuffer);
+  });
+};
 
 router.post("/", upload.single("image"), async (req, res) => {
   try {
@@ -18,20 +31,10 @@ router.post("/", upload.single("image"), async (req, res) => {
       return res.status(400).json({ error: "No image file uploaded" });
     }
 
-    // Upload to Cloudinary
-    const cloudinaryResult = await cloudinary.uploader.upload(req.file.path, {
-      folder: "woofles/posts",
-    });
-
-    // Delete local file
-    try {
-      fs.unlinkSync(req.file.path);
-    } catch (unlinkErr) {
-      console.warn("Failed to delete file:", unlinkErr);
-    }
+    const result = await streamUpload(req.file.buffer);
 
     const newPost = new Post({
-      imageUrl: cloudinaryResult.secure_url,
+      imageUrl: result.secure_url,
       caption,
       user: userId,
     });
@@ -39,7 +42,7 @@ router.post("/", upload.single("image"), async (req, res) => {
     await newPost.save();
     res.status(201).json(newPost);
   } catch (err) {
-    console.error("Upload error:", err.message);
+    console.error("Upload error:", err);
     res.status(500).json({ error: "Something went wrong uploading the post" });
   }
 });
@@ -47,18 +50,15 @@ router.post("/", upload.single("image"), async (req, res) => {
 
 router.post("/profile-pic", upload.single("image"), async (req, res) => {
   try {
-    // Upload image to Cloudinary
-    const cloudinaryResult = await cloudinary.uploader.upload(req.file.path);
+    if (!req.file) {
+      return res.status(400).json({ error: "No image file uploaded" });
+    }
 
-    // Delete local file
-    fs.unlinkSync(req.file.path);
-
-    // Return only the image URL (no post creation)
-    res.status(201).json({ imageUrl: cloudinaryResult.secure_url });
+    const result = await streamUpload(req.file.buffer);
+    res.status(201).json({ imageUrl: result.secure_url });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to upload profile picture" });
   }
 });
 
-export default router;
